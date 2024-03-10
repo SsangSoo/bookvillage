@@ -29,4 +29,18 @@
 
 <div align="left">
   <img src="https://velog.velcdn.com/images/tjdtn4484/post/81775380-cd4d-4e0d-bc0f-207dca0659e3/image.png">
-</div>****
+</div>
+
+
+
+<details>
+<summary>개발 일지</summary>
+
+#### 3월 11일 
+- entity 작성
+- 연관관계는 일단 모두 다대일 단방향으로 설계
+  - 후에 필요에 의해 양방향 필요시 그 때 양방향 관계를 맺어줄 계획
+
+
+
+</details>
