@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import refactoring.bookvillage.global.audit.BaseEntity;
 
+@Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
@@ -30,9 +31,21 @@ public class Member extends BaseEntity {
     @Column(name = "img_url")
     private String imgUrl;
 
-    enum MemberState {
+    public enum MemberState {
         NEW,
         ACTIVITY,
         QUIT
+    }
+
+    public static Member createMember(String email, String name, String display, MemberState state, String imgUrl) {
+        return new Member(email, name, display, state, imgUrl);
+    }
+
+    private Member(String email, String name, String display, MemberState state, String imgUrl) {
+        this.email = email;
+        this.name = name;
+        this.display = display;
+        this.state = state;
+        this.imgUrl = imgUrl;
     }
 }

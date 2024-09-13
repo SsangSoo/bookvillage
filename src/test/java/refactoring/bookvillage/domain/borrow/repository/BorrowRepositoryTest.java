@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import refactoring.bookvillage.domain.borrow.controller.dto.CreateBorrowRequestDto;
 import refactoring.bookvillage.domain.borrow.entity.Borrow;
 import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
 
@@ -43,26 +44,27 @@ class BorrowRepositoryTest {
         Borrow borrow = Borrow.createBorrow(getCreateBorrowDto());
         Borrow savedBorrow = borrowRepository.save(borrow);
 
-        //when
+        // when
         Optional<Borrow> findByBorrow = borrowRepository.findById(savedBorrow.getId());
         Borrow findBorrow = findByBorrow.orElseThrow();
 
-        //then
+        // then
         assertThat(borrow).isEqualTo(findBorrow);
     }
 
 
 
     private CreateBorrowDto getCreateBorrowDto() {
-        return new CreateBorrowDto(
-                "책 제목",
+        return new CreateBorrowDto(getCreateRequestDto(),1L);
+    }
+
+    private CreateBorrowRequestDto getCreateRequestDto() {
+        return new CreateBorrowRequestDto("책 제목",
                 "책 빌려드립니다.",
                 "DDD",
                 "에릭 에반스",
                 "한빛? 에이콘이었나..?",
-                null,
-                1L
-        );
+                null);
     }
 
 }

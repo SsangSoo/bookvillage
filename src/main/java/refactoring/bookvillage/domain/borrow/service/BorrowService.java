@@ -5,6 +5,6 @@ import refactoring.bookvillage.domain.borrow.controller.dto.CreateBorrowRequestD
 
 public interface BorrowService {
 
-     BorrowResponseDto createBorrow(CreateBorrowRequestDto createBorrowRequestDto);
+     void createBorrow(CreateBorrowRequestDto createBorrowRequestDto, Long memberId);
 
 }
