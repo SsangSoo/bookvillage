@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import refactoring.bookvillage.domain.member.entity.Member;
 import refactoring.bookvillage.domain.request.entity.Request;
 
-@Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RequestComment {

@@ -4,12 +4,12 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import refactoring.bookvillage.domain.member.entity.Member;
+import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
 import refactoring.bookvillage.global.audit.BaseEntity;
 
 
-@Getter
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Borrow extends BaseEntity {
 
@@ -33,18 +33,28 @@ public class Borrow extends BaseEntity {
     @Column(name = "publisher", length = 100)
     private String publisher;
 
-    @Column(name = "display")
-    private String display;
-
-    @Column(name = "viewcount")
-    private Long viewcount;
+    @Column(name = "view_count")
+    private Long viewCount;
 
     @Column(name = "thumbnail")
     private String thumbnail;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @Column(name = "member_id")
+    private Long memberId;
+
+    public static Borrow createBorrow(CreateBorrowDto createBorrowDto) {
+        return new Borrow(createBorrowDto);
+    }
+
+    private Borrow(CreateBorrowDto createBorrowDto) {
+        this.title = createBorrowDto.getTitle();
+        this.content = createBorrowDto.getContent();
+        this.bookTitle = createBorrowDto.getBookTitle();
+        this.author = createBorrowDto.getAuthor();
+        this.publisher = createBorrowDto.getPublisher();
+        this.thumbnail = createBorrowDto.getThumbnail();
+        this.memberId = createBorrowDto.getMemberId();
+    }
 
 
 }

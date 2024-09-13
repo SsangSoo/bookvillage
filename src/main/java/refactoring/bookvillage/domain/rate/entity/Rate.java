@@ -10,7 +10,6 @@ import refactoring.bookvillage.global.audit.BaseEntity;
 
 import static jakarta.persistence.FetchType.*;
 
-@Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Rate extends BaseEntity {
@@ -29,11 +28,9 @@ public class Rate extends BaseEntity {
     @Column(name = "display", length = 100)
     private String display;
 
-    @ManyToOne
-    @JoinColumn(name = "book_id")
-    private Book book;
+    @Column(name = "book_id")
+    private Long bookId;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @Column(name = "member_id")
+    private Long memberId;
 }

@@ -9,7 +9,6 @@ import refactoring.bookvillage.domain.member.entity.Member;
 
 import static lombok.AccessLevel.*;
 
-@Getter
 @Entity
 @NoArgsConstructor(access = PROTECTED)
 public class Like {
@@ -19,12 +18,9 @@ public class Like {
     @Column(name = "like_id")
     private Long id;
 
+    @Column(name = "member_id")
+    private Long memberId;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
-
-    @ManyToOne
-    @JoinColumn(name = "community_id")
-    private Community community;
+    @Column(name = "community_id")
+    private Long communityId;
 }

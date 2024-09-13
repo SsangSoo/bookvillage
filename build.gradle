@@ -24,7 +24,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'		// jpa
     implementation 'org.springframework.boot:spring-boot-starter-security'		// security
-//    implementation 'org.springframework.boot:spring-boot-starter-validation'	// validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'	// validation
     implementation 'org.springframework.boot:spring-boot-starter-web'			// web
 //    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'	// oauth 2.0
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'	// redis
@@ -44,7 +44,9 @@ dependencies {
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'				// devtools
 
-    runtimeOnly 'com.mysql:mysql-connector-j'									// mysql
+    //H2 데이터베이스 추가
+    runtimeOnly 'com.h2database:h2'
+//    runtimeOnly 'com.mysql:mysql-connector-j'									// mysql
 
     annotationProcessor 'org.projectlombok:lombok'								// lombok
 

@@ -1,13 +1,13 @@
 spring:
-  data:
-    redis:
-      host: localhost
-      port: 6379
-  datasource:
-    url: jdbc:mysql://localhost:3306/bookvillage?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-    username: root
-    password: ${mysql-root-password}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+#  data:
+#    redis:
+#      host: localhost
+#      port: 6379
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/bookvillage?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+#    username: root
+#    password: ${mysql-root-password}
+#    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: create #local에선 create / 배포 운영환경 none
@@ -16,17 +16,17 @@ spring:
         # show_sql: true
         format_sql: true  # SQL문 출력 / 배포 운영 환경은 none
         default_batch_fetch_size: 100
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            clientId: ${BV-GOOGLEID}
-            clientSecret: ${BV-GOOGLE-SK}
-            scope:
-              - email
-              - profile
-            redirect-uri: "http://localhost:8080/login/oauth2/code/google"
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            clientId: ${BV-GOOGLEID}
+#            clientSecret: ${BV-GOOGLE-SK}
+#            scope:
+#              - email
+#              - profile
+#            redirect-uri: "http://localhost:8080/login/oauth2/code/google"
   servlet:
     multipart:
       enabled: true

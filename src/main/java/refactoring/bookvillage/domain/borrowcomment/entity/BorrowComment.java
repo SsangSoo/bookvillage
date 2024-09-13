@@ -10,7 +10,6 @@ import refactoring.bookvillage.global.audit.BaseEntity;
 
 import static jakarta.persistence.FetchType.LAZY;
 
-@Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BorrowComment extends BaseEntity {
@@ -26,12 +25,10 @@ public class BorrowComment extends BaseEntity {
     @Column(name = "display")
     private String display;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @Column(name = "member_id")
+    private Long member_id;
 
-    @ManyToOne
-    @JoinColumn(name = "borrow_id")
-    private Borrow borrow;
+    @Column(name = "borrow_id")
+    private Long borrowId;
 
 }
