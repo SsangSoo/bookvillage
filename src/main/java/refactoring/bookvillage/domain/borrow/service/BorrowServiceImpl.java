@@ -32,7 +32,10 @@ public class BorrowServiceImpl implements BorrowService {
         return Borrow.createBorrow(createBorrowDto);
     }
 
-    private void existMember(Long memberId) {
+
+    @Override
+    @Transactional(readOnly = true)
+    public void existMember(Long memberId) {
         if(!memberRepository.existsMemberById(memberId)) {
             throw new BusinessException("멤버가 존재하지 않습니다.");
         }

@@ -7,4 +7,5 @@ public interface BorrowService {
 
      void createBorrow(CreateBorrowRequestDto createBorrowRequestDto, Long memberId);
 
+     void existMember(Long memberId);
 }

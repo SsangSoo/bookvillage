@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.*;
 class BorrowRepositoryTest {
 
     @Autowired
-    BorrowRepository borrowRepository;
+    private BorrowRepository borrowRepository;
 
     @Test
     @DisplayName("save 테스트 - @Repository 없이 스프링이 알아서 만든 구현체로 확인할 수 있다.")

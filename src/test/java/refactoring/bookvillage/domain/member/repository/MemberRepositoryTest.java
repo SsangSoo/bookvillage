@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.*;
 class MemberRepositoryTest {
 
     @Autowired
-    MemberRepository memberRepository;
+    private MemberRepository memberRepository;
 
     @Test
     @DisplayName("멤버의 존재 유무를 알 수 있다.")
