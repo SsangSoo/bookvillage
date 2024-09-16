@@ -1,7 +1,5 @@
 package refactoring.bookvillage.domain.borrow.controller.dto;
 
-import jakarta.persistence.Column;
-
 public class BorrowResponseDto {
 
     private Long id;

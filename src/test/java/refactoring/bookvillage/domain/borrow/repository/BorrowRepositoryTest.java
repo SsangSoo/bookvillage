@@ -52,6 +52,20 @@ class BorrowRepositoryTest {
         assertThat(borrow).isEqualTo(findBorrow);
     }
 
+    @Test
+    @DisplayName("게시글 타이틀과 책 제목으로 게시글을 조회할 수 있다.")
+    void findBorrowByTitleAndBookTitleTest() {
+        // given
+        Borrow borrow = Borrow.createBorrow(getCreateBorrowDto());
+        Borrow savedBorrow = borrowRepository.save(borrow);
+
+        // when
+        Borrow findedBorrow = borrowRepository.findBorrowByTitleAndBookTitle(borrow.getTitle(), borrow.getBookTitle());
+
+        // then
+        assertThat(savedBorrow).isEqualTo(findedBorrow);
+
+    }
 
 
     private CreateBorrowDto getCreateBorrowDto() {
