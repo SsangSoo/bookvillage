@@ -13,7 +13,7 @@
 - 스프링 데이터 JPA + QueryDSL
 - GOOGLE API를 이용한 로그인
  
-- 로컬 MySQL
+- 로컬 MySQL / 테스트 : H2(인메모리)
 - 개발 Tool : 인텔리제이
 - 데이터베이스 Tool : DataGrip(JetBrain사 Tool)
 - JWT 사용으로 Redis
@@ -28,7 +28,7 @@
 ### ERD
 
 <div align="left">
-  <img src="https://velog.velcdn.com/images/tjdtn4484/post/81775380-cd4d-4e0d-bc0f-207dca0659e3/image.png">
+  <img src="https://velog.velcdn.com/images/tjdtn4484/post/5917b915-43f5-41d5-a07b-4447d13bee11/image.png">
 </div>
 
 
@@ -41,6 +41,8 @@
 - 연관관계는 일단 모두 다대일 단방향으로 설계
   - 후에 필요에 의해 양방향 필요시 그 때 양방향 관계를 맺어줄 계획
 
-
+#### 9월 중순 
+- Borrow 도메인 작성중
+- ERD 수정(참조 관계 모두 제거 후, 비참조 관계로 설정)
 
 </details>
