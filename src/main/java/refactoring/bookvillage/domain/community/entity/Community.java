@@ -2,10 +2,9 @@ package refactoring.bookvillage.domain.community.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import refactoring.bookvillage.domain.member.entity.Member;
-import refactoring.bookvillage.global.audit.BaseEntity;
+import refactoring.bookvillage.domain.audit.BaseEntity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

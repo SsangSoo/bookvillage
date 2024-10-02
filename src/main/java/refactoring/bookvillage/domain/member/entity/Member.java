@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import refactoring.bookvillage.global.audit.BaseEntity;
+import refactoring.bookvillage.domain.audit.BaseEntity;
 
 @Getter
 @Entity

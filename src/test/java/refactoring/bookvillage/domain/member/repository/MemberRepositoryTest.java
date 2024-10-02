@@ -31,4 +31,18 @@ class MemberRepositoryTest {
         assertThat(existsNotCreatedMember).isFalse();
     }
 
+
+    @Test
+    @DisplayName("삭제 플래그를 통해 멤버의 삭제 유무를 식별한다.")
+    void deleteMembersByIdTest() {
+        // given
+        Member member = Member.createMember("email", "킴", "별명:쌩수", Member.MemberState.NEW, null);
+        Member savedMember = memberRepository.save(member);
+
+        // when
+        boolean existsCreatedMember = memberRepository.checkDeletedByTag(savedMember.getId());
+
+        //then
+        assertThat(existsCreatedMember).isFalse();
+    }
 }

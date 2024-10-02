@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import refactoring.bookvillage.domain.borrow.controller.dto.CreateBorrowRequestDto;
+import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequestDto;
 import refactoring.bookvillage.domain.borrow.entity.Borrow;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
 import refactoring.bookvillage.domain.member.entity.Member;
@@ -63,6 +64,39 @@ class BorrowServiceImplTest {
         assertThat(findBorrow.getBookTitle()).isEqualTo(createBorrowRequestDto.getBookTitle());
         assertThat(findBorrow.getContent()).isEqualTo(createBorrowRequestDto.getContent());
 
+    }
+
+    @Test
+    @DisplayName("책 대여 게시글 생성 후 수정 테스트")
+    void updateBorrowTest() {
+        // given
+        Member member = Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null);
+        Member savedMember = memberRepository.save(member);
+
+        assertThat(member.getId()).isEqualTo(savedMember.getId());
+        CreateBorrowRequestDto createBorrowRequestDto = getCreateRequestDto();
+
+        borrowService.createBorrow(createBorrowRequestDto, member.getId());
+        Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowRequestDto.getTitle(), createBorrowRequestDto.getBookTitle());
+
+        UpdateBorrowRequestDto updateRequestDto = getUpdateRequestDto();
+
+        borrowService.updateBorrow(updateRequestDto, findBorrow.getId(), member.getId());
+        Borrow findUpdatedBorrow = borrowRepository.findBorrowByTitleAndBookTitle(updateRequestDto.getTitle(), updateRequestDto.getBookTitle());
+
+        // then
+        assertThat(findUpdatedBorrow.getTitle()).isEqualTo(updateRequestDto.getTitle());
+        assertThat(findUpdatedBorrow.getBookTitle()).isEqualTo(updateRequestDto.getBookTitle());
+        assertThat(findUpdatedBorrow.getContent()).isEqualTo(updateRequestDto.getContent());
+    }
+
+    private UpdateBorrowRequestDto getUpdateRequestDto() {
+        return new UpdateBorrowRequestDto("변경된 책 제목",
+                "책 빌려드립니다.",
+                "DDD",
+                "여전히 에릭 에반스",
+                "한빛? 에이콘이었나..?",
+                null);
     }
 
     private CreateBorrowRequestDto getCreateRequestDto() {

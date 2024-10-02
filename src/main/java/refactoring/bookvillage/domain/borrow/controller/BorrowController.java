@@ -5,12 +5,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import refactoring.bookvillage.domain.borrow.controller.dto.BorrowResponseDto;
 import refactoring.bookvillage.domain.borrow.controller.dto.CreateBorrowRequestDto;
-import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequest;
+import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequestDto;
 import refactoring.bookvillage.domain.borrow.service.BorrowService;
 
 @Slf4j
@@ -30,7 +29,7 @@ public class BorrowController {
     }
 
     @PutMapping("/{borrowId}")
-    public ResponseEntity<BorrowResponseDto> updateBorrow(@RequestBody @Valid UpdateBorrowRequest updateBorrowRequestDto,
+    public ResponseEntity<BorrowResponseDto> updateBorrow(@RequestBody @Valid UpdateBorrowRequestDto updateBorrowRequestDto,
                                                           @PathVariable("borrowId") Long borrowId,
                                                           HttpServletRequest request) {
         Long memberId = (Long) request.getAttribute("memberId");

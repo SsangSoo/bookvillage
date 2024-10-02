@@ -6,6 +6,9 @@ import refactoring.bookvillage.domain.member.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    @Query("select m.deleteTag from Member m where m.id = :memberId")
     boolean existsMemberById(Long memberId);
+
+    @Query("select m.deleteTag from Member m where m.id = :memberId")
+    boolean checkDeletedByTag(Long memberId);
+
 }

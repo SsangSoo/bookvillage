@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequestDto;
 import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
-import refactoring.bookvillage.global.audit.BaseEntity;
+import refactoring.bookvillage.domain.audit.BaseEntity;
+import refactoring.bookvillage.domain.borrow.service.dto.UpdateBorrowDto;
 
 
 @Entity
@@ -57,4 +59,12 @@ public class Borrow extends BaseEntity {
     }
 
 
+    public void update(UpdateBorrowDto updateBorrowDto) {
+        this.title = updateBorrowDto.getTitle();
+        this.content = updateBorrowDto.getContent();
+        this.bookTitle = updateBorrowDto.getBookTitle();
+        this.author = updateBorrowDto.getAuthor();
+        this.publisher = updateBorrowDto.getPublisher();
+        this.thumbnail = updateBorrowDto.getThumbnail();
+    }
 }

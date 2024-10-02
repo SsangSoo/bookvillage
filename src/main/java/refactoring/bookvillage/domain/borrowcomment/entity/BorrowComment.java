@@ -2,13 +2,8 @@ package refactoring.bookvillage.domain.borrowcomment.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import refactoring.bookvillage.domain.borrow.entity.Borrow;
-import refactoring.bookvillage.domain.member.entity.Member;
-import refactoring.bookvillage.global.audit.BaseEntity;
-
-import static jakarta.persistence.FetchType.LAZY;
+import refactoring.bookvillage.domain.audit.BaseEntity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

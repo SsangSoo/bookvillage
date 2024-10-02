@@ -2,13 +2,8 @@ package refactoring.bookvillage.domain.rate.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import refactoring.bookvillage.domain.book.entity.Book;
-import refactoring.bookvillage.domain.member.entity.Member;
-import refactoring.bookvillage.global.audit.BaseEntity;
-
-import static jakarta.persistence.FetchType.*;
+import refactoring.bookvillage.domain.audit.BaseEntity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

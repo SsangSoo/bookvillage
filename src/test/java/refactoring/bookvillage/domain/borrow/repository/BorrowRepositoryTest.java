@@ -67,6 +67,22 @@ class BorrowRepositoryTest {
 
     }
 
+    @Test
+    @DisplayName("삭제 플레그를 통해서 게시글의 삭제여부를 확인할 수 있다.")
+    void checkDeletedByTagTest() {
+        // given
+        Borrow borrow = Borrow.createBorrow(getCreateBorrowDto());
+        Borrow savedBorrow = borrowRepository.save(borrow);
+
+        // when
+        boolean deletedTag = borrowRepository.checkDeletedByTag(savedBorrow.getId());
+
+        // then
+        assertThat(deletedTag).isFalse();
+
+    }
+
+
 
     private CreateBorrowDto getCreateBorrowDto() {
         return new CreateBorrowDto(getCreateRequestDto(),1L);
