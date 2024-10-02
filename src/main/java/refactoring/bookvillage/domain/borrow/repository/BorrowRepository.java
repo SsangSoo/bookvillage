@@ -6,4 +6,6 @@ import refactoring.bookvillage.domain.borrow.entity.Borrow;
 public interface BorrowRepository extends JpaRepository<Borrow, Long> {
 
     Borrow findBorrowByTitleAndBookTitle(String title, String bookTitle);
+
+    boolean existsBorrowById(Long borrowId);
 }

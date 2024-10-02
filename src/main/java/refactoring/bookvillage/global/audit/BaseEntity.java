@@ -3,8 +3,6 @@ package refactoring.bookvillage.global.audit;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -23,11 +21,11 @@ public abstract class BaseEntity {
     @Column(name = "modified_at")
     private LocalDateTime modifiedAt;
 
-    @Column(name = "delete_tf", columnDefinition = "boolean")
-    private boolean deleteTf;
+    @Column(name = "deleteTag", columnDefinition = "boolean")
+    private boolean deleteTag;
 
     public void delete() {
-        this.deleteTf = true;
+        this.deleteTag = true;
     }
 
 

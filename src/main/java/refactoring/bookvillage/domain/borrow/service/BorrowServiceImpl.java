@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import refactoring.bookvillage.domain.borrow.controller.dto.BorrowResponseDto;
 import refactoring.bookvillage.domain.borrow.controller.dto.CreateBorrowRequestDto;
+import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequest;
 import refactoring.bookvillage.domain.borrow.entity.Borrow;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
 import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
@@ -26,6 +27,15 @@ public class BorrowServiceImpl implements BorrowService {
         borrowRepository.save(borrow);
     }
 
+    @Override
+    public void updateBorrow(UpdateBorrowRequest updateBorrowRequestDto, Long borrowId, Long memberId) {
+        existMember(memberId);
+        existBorrow(borrowId);
+
+    }
+
+
+
 
     private Borrow dtoToEntity(CreateBorrowRequestDto createBorrowRequestDto, Long memberId) {
         CreateBorrowDto createBorrowDto = new CreateBorrowDto(createBorrowRequestDto, memberId);
@@ -38,6 +48,14 @@ public class BorrowServiceImpl implements BorrowService {
     public void existMember(Long memberId) {
         if(!memberRepository.existsMemberById(memberId)) {
             throw new BusinessException("멤버가 존재하지 않습니다.");
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void existBorrow(Long borrowId) {
+        if(!borrowRepository.existsBorrowById(borrowId)) {
+            throw new BusinessException("대여 게시글이 존재하지 않습니다.");
         }
     }
 }
