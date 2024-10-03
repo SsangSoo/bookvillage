@@ -40,7 +40,7 @@ class MemberRepositoryTest {
         Member savedMember = memberRepository.save(member);
 
         // when
-        boolean existsCreatedMember = memberRepository.checkDeletedByTag(savedMember.getId());
+        boolean existsCreatedMember = memberRepository.checkMemberDeletedByTag(savedMember.getId());
 
         //then
         assertThat(existsCreatedMember).isFalse();

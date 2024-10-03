@@ -9,7 +9,8 @@ public interface BorrowService {
 
      void updateBorrow(UpdateBorrowRequestDto updateBorrowRequestDto, Long borrowId, Long memberId);
 
-     void existMember(Long memberId);
+    void deleteBorrow(Long borrowId, Long memberId);
 
+    void existMember(Long memberId);
 
 }

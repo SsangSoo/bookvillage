@@ -36,6 +36,10 @@ public class BorrowServiceImpl implements BorrowService {
         Borrow borrow = findBorrow.orElseThrow(() -> new BusinessException("대여 게시글이 존재하지 않습니다."));
         validationBeforeUpdate(memberId, borrow);
         borrow.update(updateRequestToUpdateDto(updateBorrowRequestDto));
+    }
+
+    @Override
+    public void deleteBorrow(Long borrowId, Long memberId) {
 
     }
 
@@ -60,13 +64,18 @@ public class BorrowServiceImpl implements BorrowService {
     }
 
 
+    //todo
+    // 회원에 대한 검증 책임을 대여 도메인에서 하는 것이 맞나..?
+        // 이 검증은 다른 도메인(예를 들면, 커뮤니티, 책 요청)에도 똑같은 코드를 사용한다.
+            // 다른 도메인마다 이런 검증 코드를 넣게 되면 코드 중복이 일어난다.
+        // 시큐리티 필터에서 멤버가 이미 검증된 후에 컨트롤러로 요청이 오는데 굳이 할 필요가 있을까..?
     @Override
     @Transactional(readOnly = true)
     public void existMember(Long memberId) {
-        if(!memberRepository.existsMemberById(memberId)) {
-            throw new BusinessException("멤버가 존재하지 않습니다.");
-        }
-        if(memberRepository.checkDeletedByTag(memberId)) {
+        Optional<Boolean> existMember = memberRepository.checkMemberDeletedByTag(memberId);
+        Boolean deletedMemberTag = existMember
+                .orElseThrow(() -> new BusinessException("멤버가 존재하지 않습니다."));
+        if(deletedMemberTag) {
             throw new BusinessException("탈퇴한 멤버입니다.");
         }
     }

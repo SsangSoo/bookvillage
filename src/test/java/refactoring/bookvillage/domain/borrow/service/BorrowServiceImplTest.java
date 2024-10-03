@@ -81,6 +81,7 @@ class BorrowServiceImplTest {
 
         UpdateBorrowRequestDto updateRequestDto = getUpdateRequestDto();
 
+        // when
         borrowService.updateBorrow(updateRequestDto, findBorrow.getId(), member.getId());
         Borrow findUpdatedBorrow = borrowRepository.findBorrowByTitleAndBookTitle(updateRequestDto.getTitle(), updateRequestDto.getBookTitle());
 
@@ -89,6 +90,8 @@ class BorrowServiceImplTest {
         assertThat(findUpdatedBorrow.getBookTitle()).isEqualTo(updateRequestDto.getBookTitle());
         assertThat(findUpdatedBorrow.getContent()).isEqualTo(updateRequestDto.getContent());
     }
+
+
 
     private UpdateBorrowRequestDto getUpdateRequestDto() {
         return new UpdateBorrowRequestDto("변경된 책 제목",

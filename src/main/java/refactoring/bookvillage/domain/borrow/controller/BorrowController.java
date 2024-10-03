@@ -21,25 +21,28 @@ public class BorrowController {
     private final BorrowService borrowService;
 
     @PostMapping
-    public ResponseEntity<BorrowResponseDto> createBorrow(@RequestBody @Valid CreateBorrowRequestDto createBorrowRequestDto,
+    public ResponseEntity createBorrow(@RequestBody @Valid CreateBorrowRequestDto createBorrowRequestDto,
                                                           HttpServletRequest request) {
         Long memberId = (Long)request.getAttribute("memberId"); // 시큐리티 적용 후 바뀔 예정
         borrowService.createBorrow(createBorrowRequestDto, memberId);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @PutMapping("/{borrowId}")
-    public ResponseEntity<BorrowResponseDto> updateBorrow(@RequestBody @Valid UpdateBorrowRequestDto updateBorrowRequestDto,
+    public ResponseEntity updateBorrow(@RequestBody @Valid UpdateBorrowRequestDto updateBorrowRequestDto,
                                                           @PathVariable("borrowId") Long borrowId,
                                                           HttpServletRequest request) {
         Long memberId = (Long) request.getAttribute("memberId");
         borrowService.updateBorrow(updateBorrowRequestDto, borrowId, memberId);
-        return new ResponseEntity<>(HttpStatus.OK);
-
-
-
+        return new ResponseEntity(HttpStatus.OK);
     }
 
+    @DeleteMapping("/{borrowId}")
+    public ResponseEntity deleteBorrow(@PathVariable("borrowId") Long borrowId, HttpServletRequest request) {
+        Long memberId = (Long) request.getAttribute("memberId");
+        borrowService.deleteBorrow(borrowId, memberId);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 
 
 }
