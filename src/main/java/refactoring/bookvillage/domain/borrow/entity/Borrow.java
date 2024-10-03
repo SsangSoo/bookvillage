@@ -2,6 +2,7 @@ package refactoring.bookvillage.domain.borrow.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequestDto;
@@ -44,20 +45,32 @@ public class Borrow extends BaseEntity {
     @Column(name = "member_id")
     private Long memberId;
 
+
+    public boolean writerInspection(Long memberId) {
+        return this.memberId.equals(memberId);
+    }
+
     public static Borrow createBorrow(CreateBorrowDto createBorrowDto) {
-        return new Borrow(createBorrowDto);
+        return Borrow.builder()
+                .title(createBorrowDto.getTitle())
+                .content(createBorrowDto.getContent())
+                .bookTitle(createBorrowDto.getBookTitle())
+                .author(createBorrowDto.getAuthor())
+                .publisher(createBorrowDto.getPublisher())
+                .thumbnail(createBorrowDto.getThumbnail())
+                .build();
     }
 
-    private Borrow(CreateBorrowDto createBorrowDto) {
-        this.title = createBorrowDto.getTitle();
-        this.content = createBorrowDto.getContent();
-        this.bookTitle = createBorrowDto.getBookTitle();
-        this.author = createBorrowDto.getAuthor();
-        this.publisher = createBorrowDto.getPublisher();
-        this.thumbnail = createBorrowDto.getThumbnail();
-        this.memberId = createBorrowDto.getMemberId();
+    @Builder
+    private Borrow(String title, String content, String bookTitle, String author, String publisher, String thumbnail, Long memberId) {
+        this.title = title;
+        this.content = content;
+        this.bookTitle = bookTitle;
+        this.author = author;
+        this.publisher = publisher;
+        this.thumbnail = thumbnail;
+        this.memberId = memberId;
     }
-
 
     public void update(UpdateBorrowDto updateBorrowDto) {
         this.title = updateBorrowDto.getTitle();

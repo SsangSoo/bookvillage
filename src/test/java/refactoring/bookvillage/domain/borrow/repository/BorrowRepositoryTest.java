@@ -85,16 +85,14 @@ class BorrowRepositoryTest {
 
 
     private CreateBorrowDto getCreateBorrowDto() {
-        return new CreateBorrowDto(getCreateRequestDto(),1L);
-    }
-
-    private CreateBorrowRequestDto getCreateRequestDto() {
-        return new CreateBorrowRequestDto("책 제목",
-                "책 빌려드립니다.",
-                "DDD",
-                "에릭 에반스",
-                "한빛? 에이콘이었나..?",
-                null);
+        return CreateBorrowDto.builder()
+                .title("책 제목")
+                .content("책 빌려드립니다.")
+                .author("에릭 에반스")
+                .bookTitle("DDD")
+                .publisher("한빛? 에이콘이었나..?")
+                .thumbnail(null)
+                .build();
     }
 
 }

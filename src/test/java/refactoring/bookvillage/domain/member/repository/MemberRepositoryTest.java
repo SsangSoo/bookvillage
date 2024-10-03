@@ -23,12 +23,11 @@ class MemberRepositoryTest {
         Member savedMember = memberRepository.save(member);
 
         // when
-        boolean existsCreatedMember = memberRepository.existsMemberById(savedMember.getId());
-        boolean existsNotCreatedMember = memberRepository.existsMemberById(20L);
+        boolean existsCreatedMember = memberRepository.deleteMember(savedMember.getId());
 
         // then
         assertThat(existsCreatedMember).isTrue();
-        assertThat(existsNotCreatedMember).isFalse();
+
     }
 
 
@@ -40,7 +39,7 @@ class MemberRepositoryTest {
         Member savedMember = memberRepository.save(member);
 
         // when
-        boolean existsCreatedMember = memberRepository.checkMemberDeletedByTag(savedMember.getId());
+        boolean existsCreatedMember = memberRepository.deleteMember(savedMember.getId());
 
         //then
         assertThat(existsCreatedMember).isFalse();

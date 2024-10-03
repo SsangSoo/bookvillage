@@ -1,11 +1,11 @@
 package refactoring.bookvillage.domain.borrow.service.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import refactoring.bookvillage.domain.borrow.controller.dto.CreateBorrowRequestDto;
 
 @Getter
 public class CreateBorrowDto {
-
     private String title;
     private String content;
     private String bookTitle;
@@ -14,14 +14,14 @@ public class CreateBorrowDto {
     private String thumbnail;
     private Long memberId;
 
-    public CreateBorrowDto(CreateBorrowRequestDto createBorrowDto, Long memberId) {
-        this.title = createBorrowDto.getTitle();
-        this.content = createBorrowDto.getContent();
-        this.bookTitle = createBorrowDto.getBookTitle();
-        this.author = createBorrowDto.getAuthor();
-        this.publisher = createBorrowDto.getPublisher();
-        this.thumbnail = createBorrowDto.getThumbnail();
+    @Builder
+    public CreateBorrowDto(String title, String content, String bookTitle, String author, String publisher, String thumbnail, Long memberId) {
+        this.title = title;
+        this.content = content;
+        this.bookTitle = bookTitle;
+        this.author = author;
+        this.publisher = publisher;
+        this.thumbnail = thumbnail;
         this.memberId = memberId;
     }
-
 }

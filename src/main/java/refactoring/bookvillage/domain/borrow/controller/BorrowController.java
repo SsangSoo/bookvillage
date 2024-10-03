@@ -24,7 +24,7 @@ public class BorrowController {
     public ResponseEntity createBorrow(@RequestBody @Valid CreateBorrowRequestDto createBorrowRequestDto,
                                                           HttpServletRequest request) {
         Long memberId = (Long)request.getAttribute("memberId"); // 시큐리티 적용 후 바뀔 예정
-        borrowService.createBorrow(createBorrowRequestDto, memberId);
+        borrowService.createBorrow(createBorrowRequestDto.createBorrowRequestToServiceDto(memberId));
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -33,7 +33,7 @@ public class BorrowController {
                                                           @PathVariable("borrowId") Long borrowId,
                                                           HttpServletRequest request) {
         Long memberId = (Long) request.getAttribute("memberId");
-        borrowService.updateBorrow(updateBorrowRequestDto, borrowId, memberId);
+        borrowService.updateBorrow(updateBorrowRequestDto.updateBorrowRequestToServiceDto(), borrowId, memberId);
         return new ResponseEntity(HttpStatus.OK);
     }
 

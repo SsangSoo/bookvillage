@@ -10,6 +10,7 @@ import refactoring.bookvillage.domain.borrow.controller.dto.CreateBorrowRequestD
 import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequestDto;
 import refactoring.bookvillage.domain.borrow.entity.Borrow;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
+import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
 import refactoring.bookvillage.domain.member.entity.Member;
 import refactoring.bookvillage.domain.member.repository.MemberRepository;
 import refactoring.bookvillage.global.exception.BusinessException;
@@ -40,7 +41,7 @@ class BorrowServiceImplTest {
     @DisplayName("책 대여 게시글 생성시 memberId를 찾을 수 없으면 예외가 발생한다.")
     void createBorrowThrowExceptionIfMemberMissing() {
         // given-when-then
-        assertThatThrownBy(() -> borrowService.createBorrow(null, 1L))
+        assertThatThrownBy(() -> borrowService.createBorrow(getCreateBorrowDto(30L)))
                 .isInstanceOf(BusinessException.class)
                 .hasMessage("멤버가 존재하지 않습니다.");
     }
@@ -53,16 +54,16 @@ class BorrowServiceImplTest {
         Member savedMember = memberRepository.save(member);
 
         assertThat(member.getId()).isEqualTo(savedMember.getId());
-        CreateBorrowRequestDto createBorrowRequestDto = getCreateRequestDto();
+        CreateBorrowDto createBorrowDto = getCreateBorrowDto(savedMember.getId());
 
         // when
-        borrowService.createBorrow(createBorrowRequestDto, member.getId());
-        Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowRequestDto.getTitle(), createBorrowRequestDto.getBookTitle());
+        borrowService.createBorrow(createBorrowDto);
+        Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowDto.getTitle(), createBorrowDto.getBookTitle());
 
         // then
-        assertThat(findBorrow.getTitle()).isEqualTo(createBorrowRequestDto.getTitle());
-        assertThat(findBorrow.getBookTitle()).isEqualTo(createBorrowRequestDto.getBookTitle());
-        assertThat(findBorrow.getContent()).isEqualTo(createBorrowRequestDto.getContent());
+        assertThat(findBorrow.getTitle()).isEqualTo(createBorrowDto.getTitle());
+        assertThat(findBorrow.getBookTitle()).isEqualTo(createBorrowDto.getBookTitle());
+        assertThat(findBorrow.getContent()).isEqualTo(createBorrowDto.getContent());
 
     }
 
@@ -74,15 +75,15 @@ class BorrowServiceImplTest {
         Member savedMember = memberRepository.save(member);
 
         assertThat(member.getId()).isEqualTo(savedMember.getId());
-        CreateBorrowRequestDto createBorrowRequestDto = getCreateRequestDto();
+        CreateBorrowDto createBorrowDto = getCreateBorrowDto(member.getId());
 
-        borrowService.createBorrow(createBorrowRequestDto, member.getId());
-        Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowRequestDto.getTitle(), createBorrowRequestDto.getBookTitle());
+        borrowService.createBorrow(createBorrowDto);
+        Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowDto.getTitle(), createBorrowDto.getBookTitle());
 
         UpdateBorrowRequestDto updateRequestDto = getUpdateRequestDto();
 
         // when
-        borrowService.updateBorrow(updateRequestDto, findBorrow.getId(), member.getId());
+        borrowService.updateBorrow(updateRequestDto.updateBorrowRequestToServiceDto(), findBorrow.getId(), member.getId());
         Borrow findUpdatedBorrow = borrowRepository.findBorrowByTitleAndBookTitle(updateRequestDto.getTitle(), updateRequestDto.getBookTitle());
 
         // then
@@ -102,14 +103,16 @@ class BorrowServiceImplTest {
                 null);
     }
 
-    private CreateBorrowRequestDto getCreateRequestDto() {
-        return new CreateBorrowRequestDto("책 제목",
-                "책 빌려드립니다.",
-                "DDD",
-                "에릭 에반스",
-                "한빛? 에이콘이었나..?",
-                null);
+    private CreateBorrowDto getCreateBorrowDto(Long memberId) {
+        return CreateBorrowDto.builder()
+                .title("책 제목")
+                .content("책 빌려드립니다.")
+                .author("에릭 에반스")
+                .bookTitle("DDD")
+                .publisher("한빛? 에이콘이었나..?")
+                .thumbnail(null)
+                .memberId(1L)
+                .build();
     }
-
 
 }

@@ -3,6 +3,7 @@ package refactoring.bookvillage.domain.borrow.controller.dto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import refactoring.bookvillage.domain.borrow.service.dto.UpdateBorrowDto;
 
 @Getter
 @AllArgsConstructor
@@ -22,4 +23,15 @@ public class UpdateBorrowRequestDto {
     private String publisher;
 
     private String thumbnail;
+
+    public UpdateBorrowDto updateBorrowRequestToServiceDto() {
+        return UpdateBorrowDto.builder()
+                .title(title)
+                .content(content)
+                .bookTitle(bookTitle)
+                .author(author)
+                .publisher(publisher)
+                .thumbnail(thumbnail)
+                .build();
+    }
 }
