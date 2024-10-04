@@ -18,4 +18,9 @@ public class BorrowResponseDto {
 
     private String thumbnail;
 
+    private boolean writerWhether;
+    private boolean isAdmin;
+
+
+
 }

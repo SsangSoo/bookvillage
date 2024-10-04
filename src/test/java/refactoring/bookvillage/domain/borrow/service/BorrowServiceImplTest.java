@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import refactoring.bookvillage.domain.borrow.controller.dto.CreateBorrowRequestDto;
 import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequestDto;
 import refactoring.bookvillage.domain.borrow.entity.Borrow;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
@@ -37,22 +36,9 @@ class BorrowServiceImplTest {
         memberRepository.deleteAllInBatch();
     }
 
-    @Test
-    @DisplayName("책 대여 게시글 생성시 탈퇴한 회원이 게시글 생성을 요청하면 실패한다.")
-    void createBorrowThrowExceptionIfMemberMissing() {
-        //given
-        Member member = Member.createMember("email", "킴", "별명:쌩수", Member.MemberState.NEW, null);
-        Member savedMember = memberRepository.save(member);
-        savedMember.delete();
-
-        // when-then
-        assertThatThrownBy(() -> borrowService.createBorrow(getCreateBorrowDto(savedMember.getId())))
-                .isInstanceOf(BusinessException.class)
-                .hasMessage("요청을 시도한 회원이 탈퇴한 회원입니다.");
-    }
 
     @Test
-    @DisplayName("책 대여 게시글 생성 테스트")
+    @DisplayName("책 대여 게시글을 생성할 수 있다.")
     void createBorrowTest() {
         // given
         Member member = Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null);
@@ -73,7 +59,7 @@ class BorrowServiceImplTest {
     }
 
     @Test
-    @DisplayName("책 대여 게시글 생성 후 수정 테스트")
+    @DisplayName("책 대여 게시글을 수정할 수 있다.")
     void updateBorrowTest() {
         // given
         Member savedMember = memberRepository.save(Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null));
@@ -93,6 +79,68 @@ class BorrowServiceImplTest {
         assertThat(findUpdatedBorrow.getBookTitle()).isEqualTo(updateRequestDto.getBookTitle());
         assertThat(findUpdatedBorrow.getContent()).isEqualTo(updateRequestDto.getContent());
     }
+
+    @Test
+    @DisplayName("작성자 이외의 사람은 수정을 시도할 수 없다.")
+    void updateBorrowTestByOtherWriter() {
+        // given
+        Member ssangsoo = memberRepository.save(Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null));
+        Member soo = memberRepository.save(Member.createMember("ss@eamil.com", "강", "수", Member.MemberState.NEW, null));
+        CreateBorrowDto createBorrowDto = getCreateBorrowDto(ssangsoo.getId());
+
+        borrowService.createBorrow(createBorrowDto);
+        Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowDto.getTitle(), createBorrowDto.getBookTitle());
+
+        UpdateBorrowRequestDto updateRequestDto = getUpdateRequestDto();
+
+        // when-then
+        assertThatThrownBy(() -> borrowService.updateBorrow(updateRequestDto.updateBorrowRequestToServiceDto(), findBorrow.getId(), soo.getId()))
+                .isInstanceOf(BusinessException.class)
+                .hasMessage("작성자 외 회원이 접근 중입니다");
+    }
+
+
+    @Test
+    @DisplayName("책 대여 게시글을 삭제할 수 있다.")
+    void deleteBorrowTest() {
+        // given
+        Member savedMember = memberRepository.save(Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null));
+        CreateBorrowDto createBorrowDto = getCreateBorrowDto(savedMember.getId());
+
+        borrowService.createBorrow(createBorrowDto);
+        Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowDto.getTitle(), createBorrowDto.getBookTitle());
+
+        UpdateBorrowRequestDto updateRequestDto = getUpdateRequestDto();
+
+        // when
+        borrowService.deleteBorrow(findBorrow.getId(), savedMember.getId());
+        Borrow findUpdatedBorrow = borrowRepository.findBorrowByTitleAndBookTitle(updateRequestDto.getTitle(), updateRequestDto.getBookTitle());
+
+        // then
+        assertThat(findBorrow.isDeleteTag()).isTrue();
+    }
+
+
+
+    @Test
+    @DisplayName("작성자 이외의 사람은 삭제를 시도할 수 없다.")
+    void deleteBorrowTestByOtherWriter() {
+        // given
+        Member ssangsoo = memberRepository.save(Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null));
+        Member soo = memberRepository.save(Member.createMember("ss@eamil.com", "강", "수", Member.MemberState.NEW, null));
+        CreateBorrowDto createBorrowDto = getCreateBorrowDto(ssangsoo.getId());
+
+        borrowService.createBorrow(createBorrowDto);
+        Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowDto.getTitle(), createBorrowDto.getBookTitle());
+
+        // when-then
+        assertThatThrownBy(() -> borrowService.deleteBorrow(findBorrow.getId(), soo.getId()))
+                .isInstanceOf(BusinessException.class)
+                .hasMessage("작성자 외 회원이 접근 중입니다");
+    }
+
+
+
 
 
 

@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequestDto;
 import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
 import refactoring.bookvillage.domain.audit.BaseEntity;
 import refactoring.bookvillage.domain.borrow.service.dto.UpdateBorrowDto;
@@ -81,10 +80,10 @@ public class Borrow extends BaseEntity {
 
     public void validation(Long memberId) {
         if(isDeleteTag()) {
-            throw new BusinessException("삭제된 대여 게시글입니다.");
+            throw new BusinessException(BusinessException.ExceptionCode.DELETED_CONTENT);
         }
         if (nonEquals(memberId)) {
-            throw new BusinessException("작성자 외 회원이 접근 중입니다");
+            throw new BusinessException(BusinessException.ExceptionCode.ACCESS_OTHER_WRITER);
         }
     }
 

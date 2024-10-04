@@ -45,4 +45,14 @@ public class BorrowController {
     }
 
 
+    // 게시글 작성자인지 아닌지에 따라 프론트에서 수정, 삭제 버튼이 보이도록 한다.
+        // 추후 관리자일 경우 숨김 처리나 삭제처리를 할 수 있도록 관리자인지에 대한 정보도 알려준다.
+    @GetMapping("/{borrowId}")
+    public ResponseEntity<BorrowResponseDto> getBorrow(@PathVariable("borrowId") Long borrowId, HttpServletRequest request) {
+        Long memberId = (Long) request.getAttribute("memberId");
+        return ResponseEntity.ok(borrowService.getBorrow(borrowId, memberId));
+    }
+
+
+
 }
