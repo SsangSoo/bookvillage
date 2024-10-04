@@ -78,10 +78,14 @@ public class Borrow extends BaseEntity {
         this.thumbnail = updateBorrowDto.getThumbnail();
     }
 
-    public void validation(Long memberId) {
-        if(isDeleteTag()) {
+
+    public void deleteWhether() {
+        if (isDeleteTag()) {
             throw new BusinessException(BusinessException.ExceptionCode.DELETED_CONTENT);
         }
+    }
+
+    public void accessOtherWriter(Long memberId) {
         if (nonEquals(memberId)) {
             throw new BusinessException(BusinessException.ExceptionCode.ACCESS_OTHER_WRITER);
         }

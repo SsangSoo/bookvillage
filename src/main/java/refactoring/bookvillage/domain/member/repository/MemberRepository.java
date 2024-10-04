@@ -11,5 +11,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select m.deleteTag from Member m where m.id = :memberId")
     boolean deleteMember(@Param("memberId") Long memberId);
 
+    @Query("select m.role from Member m where m.id = :memberId")
+    String findMemberRoleById(@Param("memberId") Long memberId);
 
 }

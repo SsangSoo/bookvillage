@@ -8,6 +8,7 @@ import refactoring.bookvillage.domain.borrow.entity.Borrow;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
 import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
 import refactoring.bookvillage.domain.borrow.service.dto.UpdateBorrowDto;
+import refactoring.bookvillage.domain.member.entity.Member;
 import refactoring.bookvillage.domain.member.repository.MemberRepository;
 import refactoring.bookvillage.global.exception.BusinessException;
 
@@ -34,7 +35,8 @@ public class BorrowServiceImpl implements BorrowService {
         Optional<Borrow> findBorrow = borrowRepository.findById(borrowId);
         Borrow borrow = findBorrow.orElseThrow(() -> new BusinessException(NO_BORROW));
 
-        borrow.validation(memberId);
+        borrow.deleteWhether();
+        borrow.accessOtherWriter(memberId);
         borrow.update(updateBorrowDto);
     }
 
@@ -42,16 +44,21 @@ public class BorrowServiceImpl implements BorrowService {
     public void deleteBorrow(Long borrowId, Long memberId) {
         Borrow borrow = borrowRepository.findById(borrowId)
                 .orElseThrow(() -> new BusinessException(NO_BORROW));
-        borrow.validation(memberId);
+        borrow.deleteWhether();
+        borrow.accessOtherWriter(memberId);
         borrow.delete();
     }
 
     @Override
     @Transactional(readOnly = true)
     public BorrowResponseDto getBorrow(Long borrowId, Long memberId) {
-        borrowRepository.findById(borrowId)
+        Borrow findBorrow = borrowRepository.findById(borrowId)
                 .orElseThrow(() -> new BusinessException(NO_CONTENT));
-        return null;
+
+        String memberRole = memberRepository.findMemberRoleById(memberId);
+        if (memberRole.equals(Member.Role.ADMIN.name()) && findBorrow.isDeleteTag()) {
+            //todo
+        }
 
 
     }
