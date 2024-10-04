@@ -38,12 +38,17 @@ class BorrowServiceImplTest {
     }
 
     @Test
-    @DisplayName("책 대여 게시글 생성시 memberId를 찾을 수 없으면 예외가 발생한다.")
+    @DisplayName("책 대여 게시글 생성시 탈퇴한 회원이 게시글 생성을 요청하면 실패한다.")
     void createBorrowThrowExceptionIfMemberMissing() {
-        // given-when-then
-        assertThatThrownBy(() -> borrowService.createBorrow(getCreateBorrowDto(30L)))
+        //given
+        Member member = Member.createMember("email", "킴", "별명:쌩수", Member.MemberState.NEW, null);
+        Member savedMember = memberRepository.save(member);
+        savedMember.delete();
+
+        // when-then
+        assertThatThrownBy(() -> borrowService.createBorrow(getCreateBorrowDto(savedMember.getId())))
                 .isInstanceOf(BusinessException.class)
-                .hasMessage("멤버가 존재하지 않습니다.");
+                .hasMessage("요청을 시도한 회원이 탈퇴한 회원입니다.");
     }
 
     @Test
@@ -71,11 +76,8 @@ class BorrowServiceImplTest {
     @DisplayName("책 대여 게시글 생성 후 수정 테스트")
     void updateBorrowTest() {
         // given
-        Member member = Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null);
-        Member savedMember = memberRepository.save(member);
-
-        assertThat(member.getId()).isEqualTo(savedMember.getId());
-        CreateBorrowDto createBorrowDto = getCreateBorrowDto(member.getId());
+        Member savedMember = memberRepository.save(Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null));
+        CreateBorrowDto createBorrowDto = getCreateBorrowDto(savedMember.getId());
 
         borrowService.createBorrow(createBorrowDto);
         Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowDto.getTitle(), createBorrowDto.getBookTitle());
@@ -83,7 +85,7 @@ class BorrowServiceImplTest {
         UpdateBorrowRequestDto updateRequestDto = getUpdateRequestDto();
 
         // when
-        borrowService.updateBorrow(updateRequestDto.updateBorrowRequestToServiceDto(), findBorrow.getId(), member.getId());
+        borrowService.updateBorrow(updateRequestDto.updateBorrowRequestToServiceDto(), findBorrow.getId(), savedMember.getId());
         Borrow findUpdatedBorrow = borrowRepository.findBorrowByTitleAndBookTitle(updateRequestDto.getTitle(), updateRequestDto.getBookTitle());
 
         // then
@@ -111,7 +113,7 @@ class BorrowServiceImplTest {
                 .bookTitle("DDD")
                 .publisher("한빛? 에이콘이었나..?")
                 .thumbnail(null)
-                .memberId(1L)
+                .memberId(memberId)
                 .build();
     }
 

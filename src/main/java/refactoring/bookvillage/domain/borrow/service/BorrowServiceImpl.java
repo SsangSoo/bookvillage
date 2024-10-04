@@ -38,7 +38,7 @@ public class BorrowServiceImpl implements BorrowService {
         }
         Optional<Borrow> findBorrow = borrowRepository.findById(borrowId);
         Borrow borrow = findBorrow.orElseThrow(() -> new BusinessException("대여 게시글이 존재하지 않습니다."));
-        validationBeforeUpdate(memberId, borrow);
+        borrow.validation(memberId);
         borrow.update(updateBorrowDto);
     }
 
@@ -49,18 +49,10 @@ public class BorrowServiceImpl implements BorrowService {
         }
         Optional<Borrow> findBorrow = borrowRepository.findById(borrowId);
         Borrow borrow = findBorrow.orElseThrow(() -> new BusinessException("대여 게시글이 존재하지 않습니다."));
-        validationBeforeUpdate(memberId, borrow);
+        borrow.validation(memberId);
         borrow.delete();
     }
 
-    private void validationBeforeUpdate(Long memberId, Borrow borrow) {
-        if(borrow.isDeleteTag()) {
-            throw new BusinessException("삭제된 대여 게시글입니다.");
-        }
-        if (borrow.writerInspection(memberId)) {
-            throw new BusinessException("게시글 작성자가 다른 사람입니다..");
-        }
-    }
 
 
 

@@ -1,5 +1,6 @@
 package refactoring.bookvillage.domain.borrow.repository;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,11 @@ class BorrowRepositoryTest {
 
     @Autowired
     private BorrowRepository borrowRepository;
+
+    @AfterEach
+    void afterEach() {
+        borrowRepository.deleteAllInBatch();
+    }
 
     @Test
     @DisplayName("save 테스트 - @Repository 없이 스프링이 알아서 만든 구현체로 확인할 수 있다.")

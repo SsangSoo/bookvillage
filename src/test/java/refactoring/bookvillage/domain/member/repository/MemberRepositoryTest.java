@@ -14,22 +14,6 @@ class MemberRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @Test
-    @DisplayName("멤버의 존재 유무를 알 수 있다.")
-    void existsMemberByIdTest() {
-        // given
-        Member member = Member.createMember("email", "킴", "별명:쌩수", Member.MemberState.NEW, null);
-
-        Member savedMember = memberRepository.save(member);
-
-        // when
-        boolean existsCreatedMember = memberRepository.deleteMember(savedMember.getId());
-
-        // then
-        assertThat(existsCreatedMember).isTrue();
-
-    }
-
 
     @Test
     @DisplayName("삭제 플래그를 통해 멤버의 삭제 유무를 식별한다.")

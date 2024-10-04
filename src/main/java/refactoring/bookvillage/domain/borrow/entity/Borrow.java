@@ -9,6 +9,7 @@ import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequestD
 import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
 import refactoring.bookvillage.domain.audit.BaseEntity;
 import refactoring.bookvillage.domain.borrow.service.dto.UpdateBorrowDto;
+import refactoring.bookvillage.global.exception.BusinessException;
 
 
 @Entity
@@ -46,10 +47,6 @@ public class Borrow extends BaseEntity {
     private Long memberId;
 
 
-    public boolean writerInspection(Long memberId) {
-        return this.memberId.equals(memberId);
-    }
-
     public static Borrow createBorrow(CreateBorrowDto createBorrowDto) {
         return Borrow.builder()
                 .title(createBorrowDto.getTitle())
@@ -58,6 +55,7 @@ public class Borrow extends BaseEntity {
                 .author(createBorrowDto.getAuthor())
                 .publisher(createBorrowDto.getPublisher())
                 .thumbnail(createBorrowDto.getThumbnail())
+                .memberId(createBorrowDto.getMemberId())
                 .build();
     }
 
@@ -79,5 +77,18 @@ public class Borrow extends BaseEntity {
         this.author = updateBorrowDto.getAuthor();
         this.publisher = updateBorrowDto.getPublisher();
         this.thumbnail = updateBorrowDto.getThumbnail();
+    }
+
+    public void validation(Long memberId) {
+        if(isDeleteTag()) {
+            throw new BusinessException("삭제된 대여 게시글입니다.");
+        }
+        if (nonEquals(memberId)) {
+            throw new BusinessException("작성자 외 회원이 접근 중입니다");
+        }
+    }
+
+    private boolean nonEquals(Long memberId) {
+        return !this.memberId.equals(memberId);
     }
 }

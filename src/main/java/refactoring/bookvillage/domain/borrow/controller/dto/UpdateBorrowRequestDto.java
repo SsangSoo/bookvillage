@@ -3,9 +3,11 @@ package refactoring.bookvillage.domain.borrow.controller.dto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import refactoring.bookvillage.domain.borrow.service.dto.UpdateBorrowDto;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class UpdateBorrowRequestDto {
 

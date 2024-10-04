@@ -3,9 +3,11 @@ package refactoring.bookvillage.domain.borrow.controller.dto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class CreateBorrowRequestDto {
 
@@ -23,6 +25,7 @@ public class CreateBorrowRequestDto {
     private String publisher;
 
     private String thumbnail;
+
 
     public CreateBorrowDto createBorrowRequestToServiceDto(Long memberId) {
         return CreateBorrowDto.builder()
