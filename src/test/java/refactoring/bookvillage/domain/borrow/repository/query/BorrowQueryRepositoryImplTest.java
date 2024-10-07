@@ -1,8 +1,12 @@
 package refactoring.bookvillage.domain.borrow.repository.query;
 
+import jakarta.persistence.EntityManager;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import refactoring.bookvillage.domain.borrow.entity.Borrow;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
 import refactoring.bookvillage.domain.borrow.repository.query.dto.BorrowListQueryDto;
@@ -13,14 +17,23 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 
-@DataJpaTest
+@SpringBootTest
+@Transactional
 class BorrowQueryRepositoryImplTest {
+
+    @Autowired
+    EntityManager em;
 
     @Autowired
     BorrowRepository borrowRepository;
 
     @Autowired
     BorrowQueryRepository borrowQueryRepository;
+
+    @AfterEach
+    void afterEach() {
+        borrowRepository.deleteAllInBatch();
+    }
 
     @Test
     void getBorrowListTest() {
