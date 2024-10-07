@@ -1,12 +1,12 @@
 package refactoring.bookvillage.domain.borrow.repository.query;
 
 import jakarta.persistence.EntityManager;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.annotation.Import;
+import refactoring.bookvillage.configuration.TestQueryDslConfig;
 import refactoring.bookvillage.domain.borrow.entity.Borrow;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
 import refactoring.bookvillage.domain.borrow.repository.query.dto.BorrowListQueryDto;
@@ -17,8 +17,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 
-@SpringBootTest
-@Transactional
+@Import(TestQueryDslConfig.class)
+@DataJpaTest
 class BorrowQueryRepositoryImplTest {
 
     @Autowired
@@ -30,12 +30,9 @@ class BorrowQueryRepositoryImplTest {
     @Autowired
     BorrowQueryRepository borrowQueryRepository;
 
-    @AfterEach
-    void afterEach() {
-        borrowRepository.deleteAllInBatch();
-    }
 
     @Test
+    @DisplayName("대여 게시글 목록을 조회할 수 있다.")
     void getBorrowListTest() {
         //given
 

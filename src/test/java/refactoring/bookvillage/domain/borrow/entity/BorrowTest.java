@@ -16,7 +16,6 @@ import refactoring.bookvillage.domain.member.repository.MemberRepository;
 import static org.assertj.core.api.Assertions.*;
 
 @DataJpaTest
-@Transactional
 class BorrowTest {
 
     @Autowired

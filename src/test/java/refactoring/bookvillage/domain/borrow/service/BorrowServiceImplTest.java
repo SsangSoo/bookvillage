@@ -32,8 +32,8 @@ class BorrowServiceImplTest {
 
     @AfterEach
     void afterEach() {
-        borrowRepository.deleteAllInBatch();
         memberRepository.deleteAllInBatch();
+        borrowRepository.deleteAllInBatch();
     }
 
 
