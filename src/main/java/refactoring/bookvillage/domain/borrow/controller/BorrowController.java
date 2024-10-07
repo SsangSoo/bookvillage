@@ -7,10 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import refactoring.bookvillage.domain.borrow.controller.dto.BorrowResponseDto;
-import refactoring.bookvillage.domain.borrow.controller.dto.CreateBorrowRequestDto;
-import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequestDto;
+import refactoring.bookvillage.domain.borrow.controller.dto.*;
 import refactoring.bookvillage.domain.borrow.service.BorrowService;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -51,6 +51,15 @@ public class BorrowController {
     public ResponseEntity<BorrowResponseDto> getBorrow(@PathVariable("borrowId") Long borrowId, HttpServletRequest request) {
         Long memberId = (Long) request.getAttribute("memberId");
         return ResponseEntity.ok(borrowService.getBorrow(borrowId, memberId));
+    }
+
+    // 대여 목록을 받아온다.
+        // 관리자라면 삭제 태그가 붙은 것도 포함하여 보여준다.
+        // 그냥 단순 멤버라면 삭제 태그가 붙지 않은 것만 보여준다.
+    @GetMapping
+    public ResponseEntity<List<BorrowListResponseDto>> getBorrowList(HttpServletRequest request, BorrowCondition condition) {
+        Long memberId = (Long) request.getAttribute("memberId");
+        return ResponseEntity.ok(borrowService.getBorrowList(memberId, condition));
     }
 
 

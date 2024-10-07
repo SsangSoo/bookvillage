@@ -110,6 +110,17 @@ class BorrowControllerTest {
                 .andExpect(status().isNoContent());
     }
 
+    @Test
+    @DisplayName("대여 게시글 조회를 할 수 있다.")
+    void getBorrowRequestTest() throws Exception {
+        //given //when //then
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/borrow/" + 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk());
+    }
+
 
 
 

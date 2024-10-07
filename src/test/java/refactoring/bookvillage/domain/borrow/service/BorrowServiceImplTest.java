@@ -139,10 +139,10 @@ class BorrowServiceImplTest {
                 .hasMessage("작성자 외 회원이 접근 중입니다");
     }
 
-    @Test
-    @DisplayName("존재하지 않는 ")
-
-
+//    @Test
+//    @DisplayName("존재하지 않는 ")
+//
+//
 
 
 

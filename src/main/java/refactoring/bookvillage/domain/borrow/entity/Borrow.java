@@ -5,9 +5,11 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import refactoring.bookvillage.domain.borrow.controller.dto.BorrowResponseDto;
 import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
 import refactoring.bookvillage.domain.audit.BaseEntity;
 import refactoring.bookvillage.domain.borrow.service.dto.UpdateBorrowDto;
+import refactoring.bookvillage.domain.member.entity.Member;
 import refactoring.bookvillage.global.exception.BusinessException;
 
 
@@ -93,5 +95,24 @@ public class Borrow extends BaseEntity {
 
     private boolean nonEquals(Long memberId) {
         return !this.memberId.equals(memberId);
+    }
+
+    public void addView() {
+        viewCount++;
+    }
+
+    public BorrowResponseDto toResponseDto(Long memberId, String memberRole) {
+        return BorrowResponseDto.builder()
+                .id(id)
+                .title(title)
+                .content(content)
+                .bookTitle(bookTitle)
+                .author(author)
+                .publisher(publisher)
+                .viewCount(viewCount)
+                .thumbnail(thumbnail)
+                .writerWhether(this.memberId.equals(memberId))
+                .isAdmin(Member.Role.ADMIN.name().equals(memberRole))
+                .build();
     }
 }
