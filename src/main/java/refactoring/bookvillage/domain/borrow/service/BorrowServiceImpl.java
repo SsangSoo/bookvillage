@@ -55,12 +55,23 @@ public class BorrowServiceImpl implements BorrowService {
         Borrow findBorrow = borrowRepository.findById(borrowId)
                 .orElseThrow(() -> new BusinessException(NO_CONTENT));
 
+        // 삭제되었지만, 관리자라면 볼 수 있다.
+        // 관리자가 아니면 못 본다.
+        boolean deleteTag = findBorrow.isDeleteTag();
+
         String memberRole = memberRepository.findMemberRoleById(memberId);
-        if (memberRole.equals(Member.Role.ADMIN.name()) && findBorrow.isDeleteTag()) {
-            //todo
+
+        boolean isNotAdmin = isAdmin(memberRole);
+        if(deleteTag && isNotAdmin) {
+            throw new BusinessException(DELETED_CONTENT);
         }
+        findBorrow.addView(); // 조회수 증가.
+        return findBorrow.toResponseDto(memberId, memberRole);
 
+    }
 
+    private boolean isAdmin(String memberRole) {
+        return !memberRole.equals(Member.Role.ADMIN.name());
     }
 
 
