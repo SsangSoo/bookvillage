@@ -30,5 +30,8 @@ public abstract class BaseEntity {
         this.deleteTag = true;
     }
 
+    public boolean isNotDelete() {
+        return !this.deleteTag;
+    }
 
 }

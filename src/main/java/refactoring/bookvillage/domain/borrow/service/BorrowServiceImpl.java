@@ -3,15 +3,20 @@ package refactoring.bookvillage.domain.borrow.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import refactoring.bookvillage.domain.borrow.controller.dto.BorrowCondition;
+import refactoring.bookvillage.domain.borrow.controller.dto.BorrowListResponseDto;
 import refactoring.bookvillage.domain.borrow.controller.dto.BorrowResponseDto;
 import refactoring.bookvillage.domain.borrow.entity.Borrow;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
+import refactoring.bookvillage.domain.borrow.repository.query.BorrowQueryRepository;
+import refactoring.bookvillage.domain.borrow.repository.query.dto.BorrowListQueryDto;
 import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
 import refactoring.bookvillage.domain.borrow.service.dto.UpdateBorrowDto;
 import refactoring.bookvillage.domain.member.entity.Member;
 import refactoring.bookvillage.domain.member.repository.MemberRepository;
 import refactoring.bookvillage.global.exception.BusinessException;
 
+import java.util.List;
 import java.util.Optional;
 
 import static refactoring.bookvillage.global.exception.BusinessException.ExceptionCode.*;
@@ -21,8 +26,9 @@ import static refactoring.bookvillage.global.exception.BusinessException.Excepti
 @Transactional
 public class BorrowServiceImpl implements BorrowService {
 
-    private final BorrowRepository borrowRepository;
     private final MemberRepository memberRepository;
+    private final BorrowRepository borrowRepository;
+    private final BorrowQueryRepository queryRepository;
 
     @Override
     public void createBorrow(CreateBorrowDto createBorrowDto) {
@@ -68,6 +74,16 @@ public class BorrowServiceImpl implements BorrowService {
         findBorrow.addView(); // 조회수 증가.
         return findBorrow.toResponseDto(memberId, memberRole);
 
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<BorrowListResponseDto> getBorrowList(Long memberId, BorrowCondition condition) {
+        String memberRole = memberRepository.findMemberRoleById(memberId);
+        List<BorrowListQueryDto> borrowList = queryRepository.getBorrowList(memberRole, condition);
+        return borrowList.stream()
+                .map(BorrowListQueryDto::toResponseDto)
+                .toList();
     }
 
     private boolean isAdmin(String memberRole) {
