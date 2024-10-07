@@ -55,11 +55,11 @@ public class BorrowServiceImpl implements BorrowService {
         Borrow findBorrow = borrowRepository.findById(borrowId)
                 .orElseThrow(() -> new BusinessException(NO_CONTENT));
 
-        String memberRole = memberRepository.findMemberRoleById(memberId);
-        if (memberRole.equals(Member.Role.ADMIN.name()) && findBorrow.isDeleteTag()) {
-            //todo
-        }
-
+//        String memberRole = memberRepository.findMemberRoleById(memberId);
+//        if (memberRole.equals(Member.Role.ADMIN.name()) && findBorrow.isDeleteTag()) {
+//            //todo
+//        }
+        return null;
 
     }
 
