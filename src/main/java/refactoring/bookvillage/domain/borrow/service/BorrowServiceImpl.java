@@ -81,6 +81,7 @@ public class BorrowServiceImpl implements BorrowService {
     public List<BorrowListResponseDto> getBorrowList(Long memberId, BorrowCondition condition) {
         String memberRole = memberRepository.findMemberRoleById(memberId);
         List<BorrowListQueryDto> borrowList = queryRepository.getBorrowList(memberRole, condition);
+
         return borrowList.stream()
                 .map(BorrowListQueryDto::toResponseDto)
                 .toList();

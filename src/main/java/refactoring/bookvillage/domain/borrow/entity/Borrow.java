@@ -14,7 +14,6 @@ import refactoring.bookvillage.global.exception.BusinessException;
 
 
 @Entity
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Borrow extends BaseEntity {
 
