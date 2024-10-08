@@ -29,6 +29,9 @@ public class QBook extends EntityPathBase<Book> {
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
     //inherited
+    public final NumberPath<Long> createdId = _super.createdId;
+
+    //inherited
     public final BooleanPath deleteTag = _super.deleteTag;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
@@ -37,6 +40,9 @@ public class QBook extends EntityPathBase<Book> {
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
+
+    //inherited
+    public final NumberPath<Long> modifiedId = _super.modifiedId;
 
     public final StringPath publisher = createString("publisher");
 

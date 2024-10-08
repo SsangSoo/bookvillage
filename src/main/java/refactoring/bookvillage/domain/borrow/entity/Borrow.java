@@ -3,6 +3,7 @@ package refactoring.bookvillage.domain.borrow.entity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import refactoring.bookvillage.domain.borrow.controller.dto.BorrowResponseDto;
 import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
@@ -11,7 +12,7 @@ import refactoring.bookvillage.domain.borrow.service.dto.UpdateBorrowDto;
 import refactoring.bookvillage.domain.member.entity.Member;
 import refactoring.bookvillage.global.exception.BusinessException;
 
-
+@Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Borrow extends BaseEntity {
@@ -79,13 +80,13 @@ public class Borrow extends BaseEntity {
     }
 
 
-    public void deleteWhether() {
+    public void deleteWhetherValidation() {
         if (isDeleteTag()) {
             throw new BusinessException(BusinessException.ExceptionCode.DELETED_CONTENT);
         }
     }
 
-    public void accessOtherWriter(Long memberId) {
+    public void otherWriterAccessVerify(Long memberId) {
         if (nonEquals(memberId)) {
             throw new BusinessException(BusinessException.ExceptionCode.ACCESS_OTHER_WRITER);
         }

@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface BorrowQueryRepository {
 
-    List<BorrowListQueryDto> getBorrowList(String memberRole, BorrowCondition condition);
+    List<BorrowListQueryDto> getBorrowList(String memberRole, String keyword);
 }

@@ -25,6 +25,9 @@ public class QMember extends EntityPathBase<Member> {
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
     //inherited
+    public final NumberPath<Long> createdId = _super.createdId;
+
+    //inherited
     public final BooleanPath deleteTag = _super.deleteTag;
 
     public final StringPath display = createString("display");
@@ -37,6 +40,9 @@ public class QMember extends EntityPathBase<Member> {
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
+
+    //inherited
+    public final NumberPath<Long> modifiedId = _super.modifiedId;
 
     public final StringPath name = createString("name");
 

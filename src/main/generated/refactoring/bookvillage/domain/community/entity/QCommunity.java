@@ -30,6 +30,9 @@ public class QCommunity extends EntityPathBase<Community> {
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
     //inherited
+    public final NumberPath<Long> createdId = _super.createdId;
+
+    //inherited
     public final BooleanPath deleteTag = _super.deleteTag;
 
     public final StringPath display = createString("display");
@@ -40,6 +43,9 @@ public class QCommunity extends EntityPathBase<Community> {
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
+
+    //inherited
+    public final NumberPath<Long> modifiedId = _super.modifiedId;
 
     public final StringPath title = createString("title");
 

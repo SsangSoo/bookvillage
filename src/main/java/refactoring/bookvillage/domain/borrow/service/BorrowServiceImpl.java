@@ -41,8 +41,8 @@ public class BorrowServiceImpl implements BorrowService {
         Optional<Borrow> findBorrow = borrowRepository.findById(borrowId);
         Borrow borrow = findBorrow.orElseThrow(() -> new BusinessException(NO_BORROW));
 
-        borrow.deleteWhether();
-        borrow.accessOtherWriter(memberId);
+        borrow.deleteWhetherValidation();
+        borrow.otherWriterAccessVerify(memberId);
         borrow.update(updateBorrowDto);
     }
 
@@ -50,8 +50,8 @@ public class BorrowServiceImpl implements BorrowService {
     public void deleteBorrow(Long borrowId, Long memberId) {
         Borrow borrow = borrowRepository.findById(borrowId)
                 .orElseThrow(() -> new BusinessException(NO_BORROW));
-        borrow.deleteWhether();
-        borrow.accessOtherWriter(memberId);
+        borrow.deleteWhetherValidation();
+        borrow.otherWriterAccessVerify(memberId);
         borrow.delete();
     }
 
@@ -80,7 +80,7 @@ public class BorrowServiceImpl implements BorrowService {
     @Transactional(readOnly = true)
     public List<BorrowListResponseDto> getBorrowList(Long memberId, BorrowCondition condition) {
         String memberRole = memberRepository.findMemberRoleById(memberId);
-        List<BorrowListQueryDto> borrowList = queryRepository.getBorrowList(memberRole, condition);
+        List<BorrowListQueryDto> borrowList = queryRepository.getBorrowList(memberRole, condition.getKeyword());
 
         return borrowList.stream()
                 .map(BorrowListQueryDto::toResponseDto)
