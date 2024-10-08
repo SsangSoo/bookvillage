@@ -3,7 +3,6 @@ package refactoring.bookvillage.domain.borrow.entity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import refactoring.bookvillage.domain.borrow.controller.dto.BorrowResponseDto;
 import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
