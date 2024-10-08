@@ -1,13 +1,10 @@
 package refactoring.bookvillage.domain.borrow.entity;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.transaction.annotation.Transactional;
-import refactoring.bookvillage.domain.borrow.controller.dto.BorrowResponseDto;
-import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequestDto;
+import refactoring.bookvillage.domain.borrow.controller.dto.BorrowResponse;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
 import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
 import refactoring.bookvillage.domain.member.entity.Member;
@@ -34,7 +31,7 @@ class BorrowTest {
         Borrow savedBorrow = borrowRepository.save(borrow);
 
         //when
-        BorrowResponseDto responseDto = savedBorrow.toResponseDto(ssangsoo.getId(), ssangsoo.getRole().name());
+        BorrowResponse responseDto = savedBorrow.toResponseDto(ssangsoo.getId(), ssangsoo.getRole().name());
 
         //then
         assertThat(responseDto.isAdmin()).isFalse();

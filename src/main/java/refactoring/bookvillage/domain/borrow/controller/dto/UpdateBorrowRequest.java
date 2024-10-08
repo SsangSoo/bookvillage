@@ -9,7 +9,7 @@ import refactoring.bookvillage.domain.borrow.service.dto.UpdateBorrowDto;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateBorrowRequestDto {
+public class UpdateBorrowRequest {
 
     @NotBlank(message = "대여 게시글 제목은 필수입니다.")
     private String title;
@@ -26,7 +26,7 @@ public class UpdateBorrowRequestDto {
 
     private String thumbnail;
 
-    public UpdateBorrowDto updateBorrowRequestToServiceDto() {
+    public UpdateBorrowDto updateRequestToServiceDto() {
         return UpdateBorrowDto.builder()
                 .title(title)
                 .content(content)

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequestDto;
+import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequest;
 import refactoring.bookvillage.domain.borrow.entity.Borrow;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
 import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
@@ -48,7 +48,7 @@ class BorrowServiceImplTest {
         CreateBorrowDto createBorrowDto = getCreateBorrowDto(savedMember.getId());
 
         // when
-        borrowService.createBorrow(createBorrowDto);
+        borrowService.create(createBorrowDto);
         Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowDto.getTitle(), createBorrowDto.getBookTitle());
 
         // then
@@ -65,13 +65,13 @@ class BorrowServiceImplTest {
         Member savedMember = memberRepository.save(Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null));
         CreateBorrowDto createBorrowDto = getCreateBorrowDto(savedMember.getId());
 
-        borrowService.createBorrow(createBorrowDto);
+        borrowService.create(createBorrowDto);
         Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowDto.getTitle(), createBorrowDto.getBookTitle());
 
-        UpdateBorrowRequestDto updateRequestDto = getUpdateRequestDto();
+        UpdateBorrowRequest updateRequestDto = getUpdateRequestDto();
 
         // when
-        borrowService.updateBorrow(updateRequestDto.updateBorrowRequestToServiceDto(), findBorrow.getId(), savedMember.getId());
+        borrowService.update(updateRequestDto.updateRequestToServiceDto(), findBorrow.getId(), savedMember.getId());
         Borrow findUpdatedBorrow = borrowRepository.findBorrowByTitleAndBookTitle(updateRequestDto.getTitle(), updateRequestDto.getBookTitle());
 
         // then
@@ -88,13 +88,13 @@ class BorrowServiceImplTest {
         Member soo = memberRepository.save(Member.createMember("ss@eamil.com", "강", "수", Member.MemberState.NEW, null));
         CreateBorrowDto createBorrowDto = getCreateBorrowDto(ssangsoo.getId());
 
-        borrowService.createBorrow(createBorrowDto);
+        borrowService.create(createBorrowDto);
         Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowDto.getTitle(), createBorrowDto.getBookTitle());
 
-        UpdateBorrowRequestDto updateRequestDto = getUpdateRequestDto();
+        UpdateBorrowRequest updateRequestDto = getUpdateRequestDto();
 
         // when-then
-        assertThatThrownBy(() -> borrowService.updateBorrow(updateRequestDto.updateBorrowRequestToServiceDto(), findBorrow.getId(), soo.getId()))
+        assertThatThrownBy(() -> borrowService.update(updateRequestDto.updateRequestToServiceDto(), findBorrow.getId(), soo.getId()))
                 .isInstanceOf(BusinessException.class)
                 .hasMessage("작성자 외 회원이 접근 중입니다");
     }
@@ -107,13 +107,13 @@ class BorrowServiceImplTest {
         Member savedMember = memberRepository.save(Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null));
         CreateBorrowDto createBorrowDto = getCreateBorrowDto(savedMember.getId());
 
-        borrowService.createBorrow(createBorrowDto);
+        borrowService.create(createBorrowDto);
         Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowDto.getTitle(), createBorrowDto.getBookTitle());
 
-        UpdateBorrowRequestDto updateRequestDto = getUpdateRequestDto();
+        UpdateBorrowRequest updateRequestDto = getUpdateRequestDto();
 
         // when
-        borrowService.deleteBorrow(findBorrow.getId(), savedMember.getId());
+        borrowService.delete(findBorrow.getId(), savedMember.getId());
         Borrow findUpdatedBorrow = borrowRepository.findBorrowByTitleAndBookTitle(updateRequestDto.getTitle(), updateRequestDto.getBookTitle());
 
         // then
@@ -130,11 +130,11 @@ class BorrowServiceImplTest {
         Member soo = memberRepository.save(Member.createMember("ss@eamil.com", "강", "수", Member.MemberState.NEW, null));
         CreateBorrowDto createBorrowDto = getCreateBorrowDto(ssangsoo.getId());
 
-        borrowService.createBorrow(createBorrowDto);
+        borrowService.create(createBorrowDto);
         Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowDto.getTitle(), createBorrowDto.getBookTitle());
 
         // when-then
-        assertThatThrownBy(() -> borrowService.deleteBorrow(findBorrow.getId(), soo.getId()))
+        assertThatThrownBy(() -> borrowService.delete(findBorrow.getId(), soo.getId()))
                 .isInstanceOf(BusinessException.class)
                 .hasMessage("작성자 외 회원이 접근 중입니다");
     }
@@ -147,8 +147,8 @@ class BorrowServiceImplTest {
 
 
 
-    private UpdateBorrowRequestDto getUpdateRequestDto() {
-        return new UpdateBorrowRequestDto("변경된 책 제목",
+    private UpdateBorrowRequest getUpdateRequestDto() {
+        return new UpdateBorrowRequest("변경된 책 제목",
                 "책 빌려드립니다.",
                 "DDD",
                 "여전히 에릭 에반스",

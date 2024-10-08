@@ -3,7 +3,7 @@ package refactoring.bookvillage.domain.borrow.repository.query.dto;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import refactoring.bookvillage.domain.borrow.controller.dto.BorrowListResponseDto;
+import refactoring.bookvillage.domain.borrow.controller.dto.BorrowListResponse;
 
 @NoArgsConstructor
 public class BorrowListQueryDto {
@@ -28,8 +28,8 @@ public class BorrowListQueryDto {
         this.thumbnail = thumbnail;
     }
 
-    public BorrowListResponseDto toResponseDto() {
-        return BorrowListResponseDto.builder()
+    public BorrowListResponse toResponseDto() {
+        return BorrowListResponse.builder()
                 .id(id)
                 .title(title)
                 .bookTitle(bookTitle)

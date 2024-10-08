@@ -1,11 +1,7 @@
 package refactoring.bookvillage.domain.borrow.service.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import refactoring.bookvillage.domain.borrow.controller.dto.CreateBorrowRequestDto;
-import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequestDto;
 
 @Getter
 public class UpdateBorrowDto {

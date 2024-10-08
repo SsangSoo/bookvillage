@@ -10,8 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import refactoring.bookvillage.domain.borrow.controller.dto.CreateBorrowRequestDto;
-import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequestDto;
+import refactoring.bookvillage.domain.borrow.controller.dto.CreateBorrowRequest;
+import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequest;
 import refactoring.bookvillage.domain.borrow.service.BorrowService;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -33,7 +33,7 @@ class BorrowControllerTest {
     @DisplayName("대여 게시글 생성 요청 데이터에 게시글 제목, 본문, 책 제목에는 null값을 허용할 수 없다.")
     void createBorrowRequestDataValidationTest() throws Exception {
         //given
-        CreateBorrowRequestDto request = new CreateBorrowRequestDto(null, "본문", "책 제목", "작가", "출판사", "썸네일 주소");
+        CreateBorrowRequest request = new CreateBorrowRequest(null, "본문", "책 제목", "작가", "출판사", "썸네일 주소");
 
         //when //then
         mockMvc.perform(MockMvcRequestBuilders.post("/api/borrow")
@@ -53,7 +53,7 @@ class BorrowControllerTest {
     @DisplayName("게시글 생성 요청을 할 수 있다.")
     void createBorrowRequestTest() throws Exception {
         //given
-        CreateBorrowRequestDto request = new CreateBorrowRequestDto("대여 게시글 제목", "본문", "책 제목", "작가", "출판사", "썸네일 주소");
+        CreateBorrowRequest request = new CreateBorrowRequest("대여 게시글 제목", "본문", "책 제목", "작가", "출판사", "썸네일 주소");
 
         //when //then
         mockMvc.perform(MockMvcRequestBuilders.post("/api/borrow")
@@ -68,7 +68,7 @@ class BorrowControllerTest {
     @DisplayName("대여 게시글 수정 요청 데이터에 게시글 제목, 본문, 책 제목에는 null값을 허용할 수 없다.")
     void updateBorrowRequestDataValidationTest() throws Exception {
         //given
-        UpdateBorrowRequestDto request = new UpdateBorrowRequestDto(null, "본문", "책 제목", "작가", "출판사", "썸네일 주소");
+        UpdateBorrowRequest request = new UpdateBorrowRequest(null, "본문", "책 제목", "작가", "출판사", "썸네일 주소");
 
         //when //then
         mockMvc.perform(MockMvcRequestBuilders.put("/api/borrow/" + 1L)
@@ -87,7 +87,7 @@ class BorrowControllerTest {
     @DisplayName("대여 게시글 수정을 요청할 수 있다.")
     void updateBorrowRequestTest() throws Exception {
         //given
-        UpdateBorrowRequestDto request = new UpdateBorrowRequestDto("대여 게시글 제목", "본문", "책 제목", "작가", "출판사", "썸네일 주소");
+        UpdateBorrowRequest request = new UpdateBorrowRequest("대여 게시글 제목", "본문", "책 제목", "작가", "출판사", "썸네일 주소");
 
         //when //then
         mockMvc.perform(MockMvcRequestBuilders.put("/api/borrow/" + 1L)
@@ -116,6 +116,17 @@ class BorrowControllerTest {
         //given //when //then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/borrow/" + 1L)
                         .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("대여 게시글 목록 조회를 할 수 있다.")
+    void getBorrowListRequestTest() throws Exception {
+        //given //when //then
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/borrow")
+                        .queryParam("keyword", "키워드")
                 )
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk());

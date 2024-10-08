@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import refactoring.bookvillage.domain.borrow.controller.dto.BorrowResponseDto;
+import refactoring.bookvillage.domain.borrow.controller.dto.BorrowResponse;
 import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
 import refactoring.bookvillage.domain.audit.BaseEntity;
 import refactoring.bookvillage.domain.borrow.service.dto.UpdateBorrowDto;
@@ -100,8 +100,8 @@ public class Borrow extends BaseEntity {
         viewCount++;
     }
 
-    public BorrowResponseDto toResponseDto(Long memberId, String memberRole) {
-        return BorrowResponseDto.builder()
+    public BorrowResponse toResponseDto(Long memberId, String memberRole) {
+        return BorrowResponse.builder()
                 .id(id)
                 .title(title)
                 .content(content)

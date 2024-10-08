@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import refactoring.bookvillage.domain.borrow.controller.dto.BorrowCondition;
-import refactoring.bookvillage.domain.borrow.controller.dto.BorrowListResponseDto;
-import refactoring.bookvillage.domain.borrow.controller.dto.BorrowResponseDto;
+import refactoring.bookvillage.domain.borrow.controller.dto.BorrowListResponse;
+import refactoring.bookvillage.domain.borrow.controller.dto.BorrowResponse;
 import refactoring.bookvillage.domain.borrow.entity.Borrow;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
 import refactoring.bookvillage.domain.borrow.repository.query.BorrowQueryRepository;
@@ -31,13 +31,13 @@ public class BorrowServiceImpl implements BorrowService {
     private final BorrowQueryRepository queryRepository;
 
     @Override
-    public void createBorrow(CreateBorrowDto createBorrowDto) {
+    public void create(CreateBorrowDto createBorrowDto) {
         Borrow borrow = Borrow.createBorrow(createBorrowDto);
         borrowRepository.save(borrow);
     }
 
     @Override
-    public void updateBorrow(UpdateBorrowDto updateBorrowDto, Long borrowId, Long memberId) {
+    public void update(UpdateBorrowDto updateBorrowDto, Long borrowId, Long memberId) {
         Optional<Borrow> findBorrow = borrowRepository.findById(borrowId);
         Borrow borrow = findBorrow.orElseThrow(() -> new BusinessException(NO_BORROW));
 
@@ -47,7 +47,7 @@ public class BorrowServiceImpl implements BorrowService {
     }
 
     @Override
-    public void deleteBorrow(Long borrowId, Long memberId) {
+    public void delete(Long borrowId, Long memberId) {
         Borrow borrow = borrowRepository.findById(borrowId)
                 .orElseThrow(() -> new BusinessException(NO_BORROW));
         borrow.deleteWhetherValidation();
@@ -55,9 +55,11 @@ public class BorrowServiceImpl implements BorrowService {
         borrow.delete();
     }
 
+    //todo
+    // 댓글 기능 추가해야 함.
     @Override
     @Transactional(readOnly = true)
-    public BorrowResponseDto getBorrow(Long borrowId, Long memberId) {
+    public BorrowResponse findOne(Long borrowId, Long memberId) {
         Borrow findBorrow = borrowRepository.findById(borrowId)
                 .orElseThrow(() -> new BusinessException(NO_CONTENT));
 
@@ -78,7 +80,7 @@ public class BorrowServiceImpl implements BorrowService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BorrowListResponseDto> getBorrowList(Long memberId, BorrowCondition condition) {
+    public List<BorrowListResponse> findList(Long memberId, BorrowCondition condition) {
         String memberRole = memberRepository.findMemberRoleById(memberId);
         List<BorrowListQueryDto> borrowList = queryRepository.getBorrowList(memberRole, condition.getKeyword());
 

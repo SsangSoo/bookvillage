@@ -2,7 +2,6 @@ package refactoring.bookvillage.domain.borrow.service.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import refactoring.bookvillage.domain.borrow.controller.dto.CreateBorrowRequestDto;
 
 @Getter
 public class CreateBorrowDto {

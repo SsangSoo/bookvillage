@@ -2,7 +2,7 @@ package refactoring.bookvillage.domain.borrow.controller.dto;
 
 import lombok.Builder;
 
-public class BorrowListResponseDto {
+public class BorrowListResponse {
     private Long id;
     private String title;
     private String bookTitle;
@@ -12,7 +12,7 @@ public class BorrowListResponseDto {
     private String thumbnail;
 
     @Builder
-    public BorrowListResponseDto(Long id, String title, String bookTitle, String author, String publisher, Long viewCount, String thumbnail) {
+    public BorrowListResponse(Long id, String title, String bookTitle, String author, String publisher, Long viewCount, String thumbnail) {
         this.id = id;
         this.title = title;
         this.bookTitle = bookTitle;
