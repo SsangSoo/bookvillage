@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import refactoring.bookvillage.domain.borrow.controller.dto.*;
 import refactoring.bookvillage.domain.borrow.service.BorrowService;
+import refactoring.bookvillage.global.util.response.MessageResponse;
 
 import java.util.List;
 
@@ -21,27 +22,27 @@ public class BorrowController {
     private final BorrowService borrowService;
 
     @PostMapping
-    public ResponseEntity createBorrow(@RequestBody @Valid CreateBorrowRequest createRequestDto,
+    public ResponseEntity<Long> createBorrow(@RequestBody @Valid CreateBorrowRequest createRequestDto,
                                                           HttpServletRequest request) {
         Long memberId = (Long)request.getAttribute("memberId"); // 시큐리티 적용 후 바뀔 예정
-        borrowService.create(createRequestDto.createRequestToServiceDto(memberId));
-        return new ResponseEntity(HttpStatus.CREATED);
+        Long borrowId = borrowService.create(createRequestDto.createRequestToServiceDto(memberId));
+        return new ResponseEntity<>(borrowId, HttpStatus.CREATED);
     }
 
     @PutMapping("/{borrowId}")
-    public ResponseEntity updateBorrow(@RequestBody @Valid UpdateBorrowRequest updateRequestDto,
-                                                          @PathVariable("borrowId") Long borrowId,
-                                                          HttpServletRequest request) {
+    public ResponseEntity<MessageResponse> updateBorrow(@RequestBody @Valid UpdateBorrowRequest updateRequestDto,
+                                                        @PathVariable("borrowId") Long borrowId,
+                                                        HttpServletRequest request) {
         Long memberId = (Long) request.getAttribute("memberId");
-        borrowService.update(updateRequestDto.updateRequestToServiceDto(), borrowId, memberId);
-        return new ResponseEntity(HttpStatus.OK);
+        borrowService.update(updateRequestDto.updateRequestToServiceDto(borrowId, memberId));
+        return new ResponseEntity<>(new MessageResponse(MessageResponse.MessageCode.BORROW_UPDATED), HttpStatus.OK);
     }
 
     @DeleteMapping("/{borrowId}")
-    public ResponseEntity deleteBorrow(@PathVariable("borrowId") Long borrowId, HttpServletRequest request) {
+    public ResponseEntity<MessageResponse> deleteBorrow(@PathVariable("borrowId") Long borrowId, HttpServletRequest request) {
         Long memberId = (Long) request.getAttribute("memberId");
         borrowService.delete(borrowId, memberId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(new MessageResponse(MessageResponse.MessageCode.BORROW_DELETED), HttpStatus.NO_CONTENT);
     }
 
 

@@ -30,8 +30,6 @@ public class QMember extends EntityPathBase<Member> {
     //inherited
     public final BooleanPath deleteTag = _super.deleteTag;
 
-    public final StringPath display = createString("display");
-
     public final StringPath email = createString("email");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
@@ -45,6 +43,8 @@ public class QMember extends EntityPathBase<Member> {
     public final NumberPath<Long> modifiedId = _super.modifiedId;
 
     public final StringPath name = createString("name");
+
+    public final StringPath nickname = createString("nickname");
 
     public final EnumPath<Member.Role> role = createEnum("role", Member.Role.class);
 

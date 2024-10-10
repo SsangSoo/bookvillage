@@ -34,11 +34,9 @@ public class QBorrowComment extends EntityPathBase<BorrowComment> {
     //inherited
     public final BooleanPath deleteTag = _super.deleteTag;
 
-    public final StringPath display = createString("display");
-
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Long> member_id = createNumber("member_id", Long.class);
+    public final NumberPath<Long> memberId = createNumber("memberId", Long.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;

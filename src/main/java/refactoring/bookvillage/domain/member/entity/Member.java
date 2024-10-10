@@ -23,8 +23,8 @@ public class Member extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "display")
-    private String display;
+    @Column(name = "nickname")
+    private String nickname;
 
     @Column(name = "state")
     private MemberState state;
@@ -52,10 +52,10 @@ public class Member extends BaseEntity {
     }
 
     @Builder
-    private Member(String email, String name, String display, MemberState state, String imgUrl) {
+    private Member(String email, String name, String nickname, MemberState state, String imgUrl) {
         this.email = email;
         this.name = name;
-        this.display = display;
+        this.nickname = nickname;
         this.state = state;
         this.imgUrl = imgUrl;
         this.role = Role.MEMBER;

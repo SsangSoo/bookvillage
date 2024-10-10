@@ -48,8 +48,8 @@ class BorrowServiceImplTest {
         CreateBorrowDto createBorrowDto = getCreateBorrowDto(savedMember.getId());
 
         // when
-        borrowService.create(createBorrowDto);
-        Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowDto.getTitle(), createBorrowDto.getBookTitle());
+        Long borrowId = borrowService.create(createBorrowDto);
+        Borrow findBorrow = borrowRepository.findById(borrowId).orElseThrow();
 
         // then
         assertThat(findBorrow.getTitle()).isEqualTo(createBorrowDto.getTitle());
@@ -65,14 +65,14 @@ class BorrowServiceImplTest {
         Member savedMember = memberRepository.save(Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null));
         CreateBorrowDto createBorrowDto = getCreateBorrowDto(savedMember.getId());
 
-        borrowService.create(createBorrowDto);
-        Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowDto.getTitle(), createBorrowDto.getBookTitle());
+        Long borrowId = borrowService.create(createBorrowDto);
+        Borrow findBorrow = borrowRepository.findById(borrowId).orElseThrow();
 
         UpdateBorrowRequest updateRequestDto = getUpdateRequestDto();
 
         // when
-        borrowService.update(updateRequestDto.updateRequestToServiceDto(), findBorrow.getId(), savedMember.getId());
-        Borrow findUpdatedBorrow = borrowRepository.findBorrowByTitleAndBookTitle(updateRequestDto.getTitle(), updateRequestDto.getBookTitle());
+        borrowService.update(updateRequestDto.updateRequestToServiceDto(findBorrow.getId(), savedMember.getId()));
+        Borrow findUpdatedBorrow = borrowRepository.findById(borrowId).orElseThrow();
 
         // then
         assertThat(findUpdatedBorrow.getTitle()).isEqualTo(updateRequestDto.getTitle());
@@ -88,13 +88,13 @@ class BorrowServiceImplTest {
         Member soo = memberRepository.save(Member.createMember("ss@eamil.com", "강", "수", Member.MemberState.NEW, null));
         CreateBorrowDto createBorrowDto = getCreateBorrowDto(ssangsoo.getId());
 
-        borrowService.create(createBorrowDto);
-        Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowDto.getTitle(), createBorrowDto.getBookTitle());
+        Long borrowId = borrowService.create(createBorrowDto);
+        Borrow findBorrow = borrowRepository.findById(borrowId).orElseThrow();
 
         UpdateBorrowRequest updateRequestDto = getUpdateRequestDto();
 
         // when-then
-        assertThatThrownBy(() -> borrowService.update(updateRequestDto.updateRequestToServiceDto(), findBorrow.getId(), soo.getId()))
+        assertThatThrownBy(() -> borrowService.update(updateRequestDto.updateRequestToServiceDto(findBorrow.getId(), soo.getId())))
                 .isInstanceOf(BusinessException.class)
                 .hasMessage("작성자 외 회원이 접근 중입니다");
     }
@@ -107,14 +107,14 @@ class BorrowServiceImplTest {
         Member savedMember = memberRepository.save(Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null));
         CreateBorrowDto createBorrowDto = getCreateBorrowDto(savedMember.getId());
 
-        borrowService.create(createBorrowDto);
-        Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowDto.getTitle(), createBorrowDto.getBookTitle());
+        Long borrowId = borrowService.create(createBorrowDto);
+        Borrow findBorrow = borrowRepository.findById(borrowId).orElseThrow();
 
         UpdateBorrowRequest updateRequestDto = getUpdateRequestDto();
 
         // when
         borrowService.delete(findBorrow.getId(), savedMember.getId());
-        Borrow findUpdatedBorrow = borrowRepository.findBorrowByTitleAndBookTitle(updateRequestDto.getTitle(), updateRequestDto.getBookTitle());
+        Borrow findUpdatedBorrow = borrowRepository.findById(borrowId).orElseThrow();
 
         // then
         assertThat(findBorrow.isDeleteTag()).isTrue();
@@ -130,8 +130,8 @@ class BorrowServiceImplTest {
         Member soo = memberRepository.save(Member.createMember("ss@eamil.com", "강", "수", Member.MemberState.NEW, null));
         CreateBorrowDto createBorrowDto = getCreateBorrowDto(ssangsoo.getId());
 
-        borrowService.create(createBorrowDto);
-        Borrow findBorrow = borrowRepository.findBorrowByTitleAndBookTitle(createBorrowDto.getTitle(), createBorrowDto.getBookTitle());
+        Long borrowId = borrowService.create(createBorrowDto);
+        Borrow findBorrow = borrowRepository.findById(borrowId).orElseThrow();
 
         // when-then
         assertThatThrownBy(() -> borrowService.delete(findBorrow.getId(), soo.getId()))

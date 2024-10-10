@@ -56,7 +56,7 @@ class BorrowRepositoryTest {
         Borrow savedBorrow = borrowRepository.save(borrow);
 
         // when
-        Borrow findedBorrow = borrowRepository.findBorrowByTitleAndBookTitle(borrow.getTitle(), borrow.getBookTitle());
+        Borrow findedBorrow = borrowRepository.findById(savedBorrow.getId()).orElseThrow();
 
         // then
         assertThat(savedBorrow).isEqualTo(findedBorrow);

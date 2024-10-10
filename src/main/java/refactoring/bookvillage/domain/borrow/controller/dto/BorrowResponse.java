@@ -28,7 +28,7 @@ public class BorrowResponse {
 
 
     @Builder
-    public BorrowResponse(Long id, String title, String content, String bookTitle, String author, String publisher, Long viewCount, String thumbnail, boolean writerWhether, boolean isAdmin) {
+    private BorrowResponse(Long id, String title, String content, String bookTitle, String author, String publisher, Long viewCount, String thumbnail, boolean writerWhether, boolean isAdmin) {
         this.id = id;
         this.title = title;
         this.content = content;

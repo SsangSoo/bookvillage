@@ -31,18 +31,18 @@ public class BorrowServiceImpl implements BorrowService {
     private final BorrowQueryRepository queryRepository;
 
     @Override
-    public void create(CreateBorrowDto createBorrowDto) {
+    public Long create(CreateBorrowDto createBorrowDto) {
         Borrow borrow = Borrow.createBorrow(createBorrowDto);
-        borrowRepository.save(borrow);
+        return borrowRepository.save(borrow).getId();
     }
 
     @Override
-    public void update(UpdateBorrowDto updateBorrowDto, Long borrowId, Long memberId) {
-        Optional<Borrow> findBorrow = borrowRepository.findById(borrowId);
+    public void update(UpdateBorrowDto updateBorrowDto) {
+        Optional<Borrow> findBorrow = borrowRepository.findById(updateBorrowDto.getBorrowId());
         Borrow borrow = findBorrow.orElseThrow(() -> new BusinessException(NO_BORROW));
 
         borrow.deleteWhetherValidation();
-        borrow.otherWriterAccessVerify(memberId);
+        borrow.otherWriterAccessVerify(updateBorrowDto.getMemberId());
         borrow.update(updateBorrowDto);
     }
 

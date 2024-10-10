@@ -12,7 +12,7 @@ public class BorrowListResponse {
     private String thumbnail;
 
     @Builder
-    public BorrowListResponse(Long id, String title, String bookTitle, String author, String publisher, Long viewCount, String thumbnail) {
+    private BorrowListResponse(Long id, String title, String bookTitle, String author, String publisher, Long viewCount, String thumbnail) {
         this.id = id;
         this.title = title;
         this.bookTitle = bookTitle;

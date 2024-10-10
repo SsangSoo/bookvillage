@@ -14,7 +14,7 @@ public class CreateBorrowDto {
     private Long memberId;
 
     @Builder
-    public CreateBorrowDto(String title, String content, String bookTitle, String author, String publisher, String thumbnail, Long memberId) {
+    private CreateBorrowDto(String title, String content, String bookTitle, String author, String publisher, String thumbnail, Long memberId) {
         this.title = title;
         this.content = content;
         this.bookTitle = bookTitle;
@@ -23,4 +23,6 @@ public class CreateBorrowDto {
         this.thumbnail = thumbnail;
         this.memberId = memberId;
     }
+
+
 }

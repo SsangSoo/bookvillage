@@ -7,7 +7,6 @@ import refactoring.bookvillage.domain.borrow.entity.Borrow;
 
 public interface BorrowRepository extends JpaRepository<Borrow, Long> {
 
-    Borrow findBorrowByTitleAndBookTitle(String title, String bookTitle);
 
     @Query("select b.deleteTag from Borrow b where b.id = :borrowId")
     boolean checkDeletedByTag(@Param("borrowId") Long borrowId);

@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface BorrowService {
 
-     void create(CreateBorrowDto createBorrowDto);
+    Long create(CreateBorrowDto createBorrowDto);
 
-     void update(UpdateBorrowDto updateBorrowDto, Long borrowId, Long memberId);
+    void update(UpdateBorrowDto updateBorrowDto);
 
     void delete(Long borrowId, Long memberId);
 

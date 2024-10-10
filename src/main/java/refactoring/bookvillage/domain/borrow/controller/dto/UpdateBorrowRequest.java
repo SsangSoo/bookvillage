@@ -26,7 +26,7 @@ public class UpdateBorrowRequest {
 
     private String thumbnail;
 
-    public UpdateBorrowDto updateRequestToServiceDto() {
+    public UpdateBorrowDto updateRequestToServiceDto(Long borrowId, Long memberId) {
         return UpdateBorrowDto.builder()
                 .title(title)
                 .content(content)
@@ -34,6 +34,8 @@ public class UpdateBorrowRequest {
                 .author(author)
                 .publisher(publisher)
                 .thumbnail(thumbnail)
+                .borrowId(borrowId)
+                .memberId(memberId)
                 .build();
     }
 }
