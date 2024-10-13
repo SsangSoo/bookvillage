@@ -80,19 +80,21 @@ public class Borrow extends BaseEntity {
     }
 
 
-    public void deleteWhetherValidation() {
+    // 멤버용
+    public void isDelete() {
         if (isDeleteTag()) {
             throw new BusinessException(BusinessException.ExceptionCode.DELETED_CONTENT);
         }
     }
 
+    // 멤버용
     public void otherWriterAccessVerify(Long memberId) {
-        if (nonEquals(memberId)) {
+        if (otherWriter(memberId)) {
             throw new BusinessException(BusinessException.ExceptionCode.ACCESS_OTHER_WRITER);
         }
     }
 
-    private boolean nonEquals(Long memberId) {
+    private boolean otherWriter(Long memberId) {
         return !this.memberId.equals(memberId);
     }
 

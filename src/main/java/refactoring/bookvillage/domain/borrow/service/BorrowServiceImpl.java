@@ -41,7 +41,7 @@ public class BorrowServiceImpl implements BorrowService {
         Optional<Borrow> findBorrow = borrowRepository.findById(updateBorrowDto.getBorrowId());
         Borrow borrow = findBorrow.orElseThrow(() -> new BusinessException(NO_BORROW));
 
-        borrow.deleteWhetherValidation();
+        borrow.isDelete();
         borrow.otherWriterAccessVerify(updateBorrowDto.getMemberId());
         borrow.update(updateBorrowDto);
     }
@@ -50,7 +50,7 @@ public class BorrowServiceImpl implements BorrowService {
     public void delete(Long borrowId, Long memberId) {
         Borrow borrow = borrowRepository.findById(borrowId)
                 .orElseThrow(() -> new BusinessException(NO_BORROW));
-        borrow.deleteWhetherValidation();
+        borrow.isDelete();
         borrow.otherWriterAccessVerify(memberId);
         borrow.delete();
     }
@@ -65,15 +65,17 @@ public class BorrowServiceImpl implements BorrowService {
 
         // 삭제되었지만, 관리자라면 볼 수 있다.
         // 관리자가 아니면 못 본다.
-        boolean deleteTag = findBorrow.isDeleteTag();
+        boolean deleted = findBorrow.isDeleteTag();
 
         String memberRole = memberRepository.findMemberRoleById(memberId);
+        boolean isNotAdmin = isNotAdmin(memberRole);
 
-        boolean isNotAdmin = isAdmin(memberRole);
-        if(deleteTag && isNotAdmin) {
+        if(deleted && isNotAdmin) {
             throw new BusinessException(DELETED_CONTENT);
         }
+
         findBorrow.addView(); // 조회수 증가.
+
         return findBorrow.toResponseDto(memberId, memberRole);
 
     }
@@ -89,7 +91,7 @@ public class BorrowServiceImpl implements BorrowService {
                 .toList();
     }
 
-    private boolean isAdmin(String memberRole) {
+    private boolean isNotAdmin(String memberRole) {
         return !memberRole.equals(Member.Role.ADMIN.name());
     }
 

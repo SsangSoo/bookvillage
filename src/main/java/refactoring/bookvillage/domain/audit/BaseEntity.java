@@ -33,7 +33,7 @@ public abstract class BaseEntity {
     @Column(name = "modified_at")
     private LocalDateTime modifiedAt;
 
-    @Column(name = "deleteTag", columnDefinition = "boolean")
+    @Column(name = "delete_tag", columnDefinition = "boolean")
     private boolean deleteTag;
 
     public void delete() {

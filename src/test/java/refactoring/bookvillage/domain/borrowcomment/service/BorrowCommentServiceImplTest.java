@@ -1,6 +1,5 @@
 package refactoring.bookvillage.domain.borrowcomment.service;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import refactoring.bookvillage.domain.borrowcomment.controller.dto.CreateBorrowCommentRequest;
 import refactoring.bookvillage.domain.borrowcomment.entity.BorrowComment;
 import refactoring.bookvillage.domain.borrowcomment.repository.BorrowCommentRepository;
+import refactoring.bookvillage.domain.member.repository.MemberRepository;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -21,6 +21,7 @@ class BorrowCommentServiceImplTest {
 
     @Autowired
     BorrowCommentRepository borrowCommentRepository;
+
 
     @Test
     @DisplayName("대여 게시글 댓글을 작성할 수 있다.")
@@ -36,7 +37,7 @@ class BorrowCommentServiceImplTest {
 
         //then
         assertThat(borrowComment)
-                .extracting("content", "memberId", "borrowId")
+                .extracting("comment", "memberId", "borrowId")
                 .containsExactlyInAnyOrder("댓글을 달다!", 1L, 23L);
     }
 
