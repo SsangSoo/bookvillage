@@ -51,7 +51,7 @@ public class BorrowController {
     @GetMapping("/{borrowId}")
     public ResponseEntity<BorrowResponse> getBorrow(@PathVariable("borrowId") Long borrowId, HttpServletRequest request) {
         Long memberId = (Long) request.getAttribute("memberId");
-        return ResponseEntity.ok(borrowService.findOne(borrowId, memberId));
+        return ResponseEntity.ok(borrowService.findBorrow(borrowId, memberId));
     }
 
     // 대여 목록을 받아온다.
@@ -60,7 +60,7 @@ public class BorrowController {
     @GetMapping
     public ResponseEntity<List<BorrowListResponse>> getBorrowList(HttpServletRequest request, BorrowCondition condition) {
         Long memberId = (Long) request.getAttribute("memberId");
-        return ResponseEntity.ok(borrowService.findList(memberId, condition));
+        return ResponseEntity.ok(borrowService.findBorrowList(memberId, condition));
     }
 
 

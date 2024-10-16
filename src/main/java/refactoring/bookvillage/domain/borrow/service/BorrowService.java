@@ -16,8 +16,8 @@ public interface BorrowService {
 
     void delete(Long borrowId, Long memberId);
 
-    BorrowResponse findOne(Long borrowId, Long memberId);
+    BorrowResponse findBorrow(Long borrowId, Long memberId);
 
-    List<BorrowListResponse> findList(Long memberId, BorrowCondition condition);
+    List<BorrowListResponse> findBorrowList(Long memberId, BorrowCondition condition);
 
 }

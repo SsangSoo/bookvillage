@@ -31,7 +31,7 @@ class BorrowTest {
         Borrow savedBorrow = borrowRepository.save(borrow);
 
         //when
-        BorrowResponse responseDto = savedBorrow.toResponseDto(ssangsoo.getId(), ssangsoo.getRole().name());
+        BorrowResponse responseDto = savedBorrow.toResponseDto(ssangsoo.getId(), ssangsoo.isAdmin());
 
         //then
         assertThat(responseDto.isAdmin()).isFalse();

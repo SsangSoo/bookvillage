@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import refactoring.bookvillage.domain.audit.BaseEntity;
+import refactoring.bookvillage.global.exception.BusinessException;
 
 @Getter
 @Entity
@@ -60,4 +61,28 @@ public class Member extends BaseEntity {
         this.imgUrl = imgUrl;
         this.role = Role.MEMBER;
     }
+
+    public boolean isAdmin() {
+        return role.equals(Role.ADMIN);
+    }
+
+    public boolean isMember() {
+        return role.equals(Role.MEMBER);
+    }
+
+    public boolean isGhost() {
+        return role.equals(Role.GHOST);
+    }
+
+    public boolean isGhostOrMember() {
+        return isMember() || isGhost();
+    }
+
+
+    public void deleteValid() {
+        if(isDeleteTag()) {
+            throw new BusinessException(BusinessException.ExceptionCode.DELETED_MEMBER);
+        }
+    }
+
 }

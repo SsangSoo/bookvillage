@@ -32,25 +32,31 @@ public class BorrowServiceImpl implements BorrowService {
 
     @Override
     public Long create(CreateBorrowDto createBorrowDto) {
+        Member member = memberRepository.findById(createBorrowDto.getMemberId())
+                .orElseThrow(() -> new BusinessException(NOT_EXIST_MEMBER));
+
+        // 유령이거나, 삭제된 회원이 접근할 경우
+        if(member.isGhost() || member.isDeleteTag()) {
+            throw new BusinessException(INVALID_EXCEPTION);
+        }
+
         Borrow borrow = Borrow.createBorrow(createBorrowDto);
         return borrowRepository.save(borrow).getId();
     }
 
     @Override
     public void update(UpdateBorrowDto updateBorrowDto) {
-        Optional<Borrow> findBorrow = borrowRepository.findById(updateBorrowDto.getBorrowId());
-        Borrow borrow = findBorrow.orElseThrow(() -> new BusinessException(NO_BORROW));
+        Borrow borrow = borrowRepository.findById(updateBorrowDto.getBorrowId()).orElseThrow(() -> new BusinessException(NO_CONTENT));
 
-        borrow.isDelete();
+        borrow.isDeleteValid();
         borrow.otherWriterAccessVerify(updateBorrowDto.getMemberId());
         borrow.update(updateBorrowDto);
     }
 
     @Override
     public void delete(Long borrowId, Long memberId) {
-        Borrow borrow = borrowRepository.findById(borrowId)
-                .orElseThrow(() -> new BusinessException(NO_BORROW));
-        borrow.isDelete();
+        Borrow borrow = borrowRepository.findById(borrowId).orElseThrow(() -> new BusinessException(NOT_EXIST_CONTENT));
+        borrow.isDeleteValid();
         borrow.otherWriterAccessVerify(memberId);
         borrow.delete();
     }
@@ -59,41 +65,38 @@ public class BorrowServiceImpl implements BorrowService {
     // 댓글 기능 추가해야 함.
     @Override
     @Transactional(readOnly = true)
-    public BorrowResponse findOne(Long borrowId, Long memberId) {
-        Borrow findBorrow = borrowRepository.findById(borrowId)
-                .orElseThrow(() -> new BusinessException(NO_CONTENT));
+    public BorrowResponse findBorrow(Long borrowId, Long memberId) {
+        Borrow findBorrow = borrowRepository.findById(borrowId).orElseThrow(() -> new BusinessException(NOT_EXIST_CONTENT));
 
         // 삭제되었지만, 관리자라면 볼 수 있다.
         // 관리자가 아니면 못 본다.
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() ->  new BusinessException(NOT_EXIST_MEMBER));
+
         boolean deleted = findBorrow.isDeleteTag();
 
-        String memberRole = memberRepository.findMemberRoleById(memberId);
-        boolean isNotAdmin = isNotAdmin(memberRole);
-
-        if(deleted && isNotAdmin) {
+        if(deleted && member.isGhostOrMember()) { // 삭제되었는데, 멤버 혹은 유령 회원이라면
             throw new BusinessException(DELETED_CONTENT);
         }
 
         findBorrow.addView(); // 조회수 증가.
 
-        return findBorrow.toResponseDto(memberId, memberRole);
+        return findBorrow.toResponseDto(memberId, member.isAdmin());
 
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<BorrowListResponse> findList(Long memberId, BorrowCondition condition) {
-        String memberRole = memberRepository.findMemberRoleById(memberId);
-        List<BorrowListQueryDto> borrowList = queryRepository.getBorrowList(memberRole, condition.getKeyword());
+    public List<BorrowListResponse> findBorrowList(Long memberId, BorrowCondition condition) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new BusinessException(NOT_EXIST_MEMBER));
+        List<BorrowListQueryDto> borrowList = queryRepository.getBorrowList(member.getRole().name(), condition.getKeyword());
 
         return borrowList.stream()
                 .map(BorrowListQueryDto::toResponseDto)
                 .toList();
     }
 
-    private boolean isNotAdmin(String memberRole) {
-        return !memberRole.equals(Member.Role.ADMIN.name());
-    }
+
 
 
 }

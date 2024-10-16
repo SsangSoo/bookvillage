@@ -81,7 +81,7 @@ public class Borrow extends BaseEntity {
 
 
     // 멤버용
-    public void isDelete() {
+    public void isDeleteValid() {
         if (isDeleteTag()) {
             throw new BusinessException(BusinessException.ExceptionCode.DELETED_CONTENT);
         }
@@ -102,7 +102,7 @@ public class Borrow extends BaseEntity {
         viewCount++;
     }
 
-    public BorrowResponse toResponseDto(Long memberId, String memberRole) {
+    public BorrowResponse toResponseDto(Long memberId, boolean isAdmin) {
         return BorrowResponse.builder()
                 .id(id)
                 .title(title)
@@ -113,7 +113,7 @@ public class Borrow extends BaseEntity {
                 .viewCount(viewCount)
                 .thumbnail(thumbnail)
                 .writerWhether(this.memberId.equals(memberId))
-                .isAdmin(Member.Role.ADMIN.name().equals(memberRole))
+                .isAdmin(isAdmin)
                 .build();
     }
 }

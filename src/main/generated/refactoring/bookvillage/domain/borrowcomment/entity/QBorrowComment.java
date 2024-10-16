@@ -23,7 +23,7 @@ public class QBorrowComment extends EntityPathBase<BorrowComment> {
 
     public final NumberPath<Long> borrowId = createNumber("borrowId", Long.class);
 
-    public final StringPath content = createString("content");
+    public final StringPath comment = createString("comment");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;

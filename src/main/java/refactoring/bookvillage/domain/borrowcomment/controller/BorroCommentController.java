@@ -30,11 +30,12 @@ public class BorroCommentController {
     }
 
     @PutMapping("/{borrowCommentId}")
-    public ResponseEntity<MessageResponse> createBorrowComment(HttpServletRequest request,
+    public ResponseEntity<MessageResponse> updateBorrowComment(HttpServletRequest request,
                                                                @Valid @RequestBody UpdateBorrowCommentRequest updateRequestDto,
+                                                               @PathVariable("borrowId") Long borrowId,
                                                                @PathVariable("borrowCommentId") Long borrowCommentId) {
         Long memberId = (Long) request.getAttribute("memberId");
-        borrowCommentService.update(updateRequestDto.requestToServiceDto(memberId, borrowCommentId, borrowCommentId));
+        borrowCommentService.update(updateRequestDto.requestToServiceDto(memberId, borrowId, borrowCommentId));
         return ResponseEntity.ok(new MessageResponse(MessageResponse.MessageCode.BORROW_COMMENT_UPDATED));
     }
 }

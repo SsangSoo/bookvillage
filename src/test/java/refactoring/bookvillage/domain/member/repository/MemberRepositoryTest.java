@@ -23,7 +23,7 @@ class MemberRepositoryTest {
         Member savedMember = memberRepository.save(member);
 
         // when
-        boolean existsCreatedMember = memberRepository.deleteMember(savedMember.getId());
+        boolean existsCreatedMember = savedMember.isDeleteTag();
 
         //then
         assertThat(existsCreatedMember).isFalse();
