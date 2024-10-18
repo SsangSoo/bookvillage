@@ -29,13 +29,13 @@ public class BorrowCommentServiceImpl implements BorrowCommentService {
 
     @Override
     public Long create(CreateBorrowCommentDto createBorrowCommentDto) {
-        BorrowComment borrowComment = BorrowComment.createBorrowComment(createBorrowCommentDto);
+        final BorrowComment borrowComment = BorrowComment.createBorrowComment(createBorrowCommentDto);
         return borrowCommentRepository.save(borrowComment).getId();
     }
 
     @Override
     public void update(UpdateBorrowCommentDto updateBorrowCommentDto) {
-        Borrow borrow = borrowRepository.findById(updateBorrowCommentDto.getBorrowId()).orElseThrow(() -> new BusinessException(NOT_EXIST_CONTENT));
+        final Borrow borrow = borrowRepository.findById(updateBorrowCommentDto.getBorrowId()).orElseThrow(() -> new BusinessException(NOT_EXIST_CONTENT));
         borrow.isDeleteValid();
 
         BorrowComment borrowComment = borrowCommentRepository.findById(updateBorrowCommentDto.getBorrowCommentId()).orElseThrow(() -> new BusinessException(NOT_EXIST_COMMENT));

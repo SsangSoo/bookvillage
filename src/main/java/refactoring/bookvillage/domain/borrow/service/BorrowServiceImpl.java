@@ -17,7 +17,6 @@ import refactoring.bookvillage.domain.member.repository.MemberRepository;
 import refactoring.bookvillage.global.exception.BusinessException;
 
 import java.util.List;
-import java.util.Optional;
 
 import static refactoring.bookvillage.global.exception.BusinessException.ExceptionCode.*;
 
@@ -32,7 +31,7 @@ public class BorrowServiceImpl implements BorrowService {
 
     @Override
     public Long create(CreateBorrowDto createBorrowDto) {
-        Member member = memberRepository.findById(createBorrowDto.getMemberId())
+        final Member member = memberRepository.findById(createBorrowDto.getMemberId())
                 .orElseThrow(() -> new BusinessException(NOT_EXIST_MEMBER));
 
         // 유령이거나, 삭제된 회원이 접근할 경우
@@ -40,14 +39,13 @@ public class BorrowServiceImpl implements BorrowService {
             throw new BusinessException(INVALID_EXCEPTION);
         }
 
-        Borrow borrow = Borrow.createBorrow(createBorrowDto);
+        final Borrow borrow = Borrow.createBorrow(createBorrowDto);
         return borrowRepository.save(borrow).getId();
     }
 
     @Override
     public void update(UpdateBorrowDto updateBorrowDto) {
         Borrow borrow = borrowRepository.findById(updateBorrowDto.getBorrowId()).orElseThrow(() -> new BusinessException(NO_CONTENT));
-
         borrow.isDeleteValid();
         borrow.otherWriterAccessVerify(updateBorrowDto.getMemberId());
         borrow.update(updateBorrowDto);
@@ -81,6 +79,8 @@ public class BorrowServiceImpl implements BorrowService {
 
         findBorrow.addView(); // 조회수 증가.
 
+        // 댓글도 가져와야함.
+        // return 에 댓글도 넣어야 함.
         return findBorrow.toResponseDto(memberId, member.isAdmin());
 
     }
@@ -88,8 +88,8 @@ public class BorrowServiceImpl implements BorrowService {
     @Override
     @Transactional(readOnly = true)
     public List<BorrowListResponse> findBorrowList(Long memberId, BorrowCondition condition) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new BusinessException(NOT_EXIST_MEMBER));
-        List<BorrowListQueryDto> borrowList = queryRepository.getBorrowList(member.getRole().name(), condition.getKeyword());
+        final Member member = memberRepository.findById(memberId).orElseThrow(() -> new BusinessException(NOT_EXIST_MEMBER));
+        final List<BorrowListQueryDto> borrowList = queryRepository.getBorrowList(member.getRole().name(), condition.getKeyword());
 
         return borrowList.stream()
                 .map(BorrowListQueryDto::toResponseDto)
