@@ -6,8 +6,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import refactoring.bookvillage.domain.audit.BaseEntity;
+import refactoring.bookvillage.domain.borrowcomment.controller.dto.BorrowCommentResponse;
 import refactoring.bookvillage.domain.borrowcomment.service.dto.CreateBorrowCommentDto;
 import refactoring.bookvillage.domain.borrowcomment.service.dto.UpdateBorrowCommentDto;
+import refactoring.bookvillage.domain.member.entity.Member;
 import refactoring.bookvillage.global.exception.BusinessException;
 
 @Getter
@@ -77,5 +79,15 @@ public class BorrowComment extends BaseEntity {
         if(isDeleteTag()) {
             throw new BusinessException(BusinessException.ExceptionCode.ALREADY_DELETED_COMMENT);
         }
+    }
+
+    public BorrowCommentResponse toResponseDto(String writer) {
+        return BorrowCommentResponse.builder()
+                .id(id)
+                .comment(comment)
+                .borrowId(borrowId)
+                .memberId(memberId)
+                .writer(writer)
+                .build();
     }
 }

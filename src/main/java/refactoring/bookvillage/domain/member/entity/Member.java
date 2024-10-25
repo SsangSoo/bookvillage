@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import refactoring.bookvillage.domain.audit.BaseEntity;
 import refactoring.bookvillage.global.exception.BusinessException;
 
+import static refactoring.bookvillage.global.exception.BusinessException.ExceptionCode.INVALID_EXCEPTION;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,6 +37,9 @@ public class Member extends BaseEntity {
 
     @Column(name = "role")
     private Role role;
+
+
+
 
     public enum Role {
         ADMIN,
@@ -82,6 +87,13 @@ public class Member extends BaseEntity {
     public void deleteValid() {
         if(isDeleteTag()) {
             throw new BusinessException(BusinessException.ExceptionCode.DELETED_MEMBER);
+        }
+    }
+
+    // 유령이거나, 삭제된 회원이 접근할 경우에 대한 검증
+    public void verifyWhetherGhostAndDeletedMember() {
+        if(isGhost() || isDeleteTag()) {
+            throw new BusinessException(INVALID_EXCEPTION);
         }
     }
 

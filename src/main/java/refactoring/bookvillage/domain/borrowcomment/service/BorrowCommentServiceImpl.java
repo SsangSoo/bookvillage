@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import refactoring.bookvillage.domain.borrow.entity.Borrow;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
+import refactoring.bookvillage.domain.borrowcomment.controller.dto.BorrowCommentResponse;
 import refactoring.bookvillage.domain.borrowcomment.entity.BorrowComment;
 import refactoring.bookvillage.domain.borrowcomment.repository.BorrowCommentRepository;
 import refactoring.bookvillage.domain.borrowcomment.service.dto.CreateBorrowCommentDto;
@@ -28,13 +29,22 @@ public class BorrowCommentServiceImpl implements BorrowCommentService {
 
 
     @Override
-    public Long create(CreateBorrowCommentDto createBorrowCommentDto) {
+    public BorrowCommentResponse create(CreateBorrowCommentDto createBorrowCommentDto) {
+        Member member = memberRepository.findById(createBorrowCommentDto.getMemberId())
+                .orElseThrow(() ->  new BusinessException(NOT_EXIST_MEMBER));
+        member.verifyWhetherGhostAndDeletedMember();
+
         BorrowComment borrowComment = BorrowComment.createBorrowComment(createBorrowCommentDto);
-        return borrowCommentRepository.save(borrowComment).getId();
+        BorrowComment savedBorrowComment = borrowCommentRepository.save(borrowComment);
+        return savedBorrowComment.toResponseDto(member.getNickname());
     }
 
     @Override
-    public void update(UpdateBorrowCommentDto updateBorrowCommentDto) {
+    public BorrowCommentResponse update(UpdateBorrowCommentDto updateBorrowCommentDto) {
+        Member member = memberRepository.findById(updateBorrowCommentDto.getMemberId())
+                .orElseThrow(() ->  new BusinessException(NOT_EXIST_MEMBER));
+        member.verifyWhetherGhostAndDeletedMember();
+
         Borrow borrow = borrowRepository.findById(updateBorrowCommentDto.getBorrowId()).orElseThrow(() -> new BusinessException(NOT_EXIST_CONTENT));
         borrow.isDeleteValid();
 
@@ -42,14 +52,16 @@ public class BorrowCommentServiceImpl implements BorrowCommentService {
         borrowComment.borrowValid(updateBorrowCommentDto.getBorrowId());
         borrowComment.writerValid(updateBorrowCommentDto.getMemberId());
 
-        Member member = memberRepository.findById(updateBorrowCommentDto.getMemberId()).orElseThrow(() -> new BusinessException(NOT_EXIST_MEMBER));
-        member.deleteValid();
-
         borrowComment.update(updateBorrowCommentDto.getComment());
+        return borrowComment.toResponseDto(member.getNickname());
     }
 
     @Override
     public void delete(Long borrowId, Long borrowCommentId, Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() ->  new BusinessException(NOT_EXIST_MEMBER));
+        member.verifyWhetherGhostAndDeletedMember();
+
         Borrow borrow = borrowRepository.findById(borrowId).orElseThrow(() -> new BusinessException(NOT_EXIST_CONTENT));
         borrow.isDeleteValid();
 
@@ -57,9 +69,6 @@ public class BorrowCommentServiceImpl implements BorrowCommentService {
         borrowComment.borrowValid(borrowId);
         borrowComment.writerValid(borrowId);
         borrowComment.isDeleteValid();
-
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new BusinessException(NOT_EXIST_MEMBER));
-        member.deleteValid();
 
         borrowComment.delete();
     }

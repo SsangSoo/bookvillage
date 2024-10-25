@@ -31,7 +31,8 @@ public class BorrowQueryRepositoryImpl implements BorrowQueryRepository {
                         borrow.author,
                         borrow.publisher,
                         borrow.viewCount,
-                        borrow.thumbnail))
+                        borrow.thumbnail,
+                        borrow.createdAt))
                 .from(borrow)
                 .where(searchKeyword(keyword), isAdmin(memberRole))
                 .fetch();

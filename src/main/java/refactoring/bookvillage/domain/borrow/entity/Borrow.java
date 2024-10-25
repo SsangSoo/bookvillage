@@ -114,6 +114,7 @@ public class Borrow extends BaseEntity {
                 .thumbnail(thumbnail)
                 .writerWhether(this.memberId.equals(memberId))
                 .isAdmin(isAdmin)
+                .createdAt(getCreatedAt())
                 .build();
     }
 }

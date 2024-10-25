@@ -34,10 +34,7 @@ public class BorrowServiceImpl implements BorrowService {
         Member member = memberRepository.findById(createBorrowDto.getMemberId())
                 .orElseThrow(() -> new BusinessException(NOT_EXIST_MEMBER));
 
-        // 유령이거나, 삭제된 회원이 접근할 경우
-        if(member.isGhost() || member.isDeleteTag()) {
-            throw new BusinessException(INVALID_EXCEPTION);
-        }
+        member.verifyWhetherGhostAndDeletedMember();
 
         Borrow borrow = Borrow.createBorrow(createBorrowDto);
         Borrow savedBorrow = borrowRepository.save(borrow);
@@ -50,10 +47,7 @@ public class BorrowServiceImpl implements BorrowService {
         Member member = memberRepository.findById(updateBorrowDto.getMemberId())
                 .orElseThrow(() -> new BusinessException(NOT_EXIST_MEMBER));
 
-        // 유령이거나, 삭제된 회원이 접근할 경우
-        if(member.isGhost() || member.isDeleteTag()) {
-            throw new BusinessException(INVALID_EXCEPTION);
-        }
+        member.verifyWhetherGhostAndDeletedMember();
 
         Borrow borrow = borrowRepository.findById(updateBorrowDto.getBorrowId()).orElseThrow(() -> new BusinessException(NO_CONTENT));
         borrow.isDeleteValid();
@@ -69,10 +63,7 @@ public class BorrowServiceImpl implements BorrowService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(NOT_EXIST_MEMBER));
 
-        // 유령이거나, 삭제된 회원이 접근할 경우
-        if(member.isGhost() || member.isDeleteTag()) {
-            throw new BusinessException(INVALID_EXCEPTION);
-        }
+        member.verifyWhetherGhostAndDeletedMember();
 
         Borrow borrow = borrowRepository.findById(borrowId).orElseThrow(() -> new BusinessException(NOT_EXIST_CONTENT));
         borrow.isDeleteValid();

@@ -8,4 +8,5 @@ import java.util.List;
 public interface BorrowQueryRepository {
 
     List<BorrowListQueryDto> getBorrowList(String memberRole, String keyword);
+
 }

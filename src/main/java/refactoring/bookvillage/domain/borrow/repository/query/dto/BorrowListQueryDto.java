@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import refactoring.bookvillage.domain.borrow.controller.dto.BorrowListResponse;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 public class BorrowListQueryDto {
 
@@ -15,10 +17,11 @@ public class BorrowListQueryDto {
     private String publisher;
     private Long viewCount;
     private String thumbnail;
+    private LocalDateTime createdAt;
 
     @Builder
     @QueryProjection
-    public BorrowListQueryDto(Long id, String title, String bookTitle, String author, String publisher, Long viewCount, String thumbnail) {
+    public BorrowListQueryDto(Long id, String title, String bookTitle, String author, String publisher, Long viewCount, String thumbnail, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.bookTitle = bookTitle;
@@ -26,6 +29,7 @@ public class BorrowListQueryDto {
         this.publisher = publisher;
         this.viewCount = viewCount;
         this.thumbnail = thumbnail;
+        this.createdAt = createdAt;
     }
 
     public BorrowListResponse toResponseDto() {
@@ -37,6 +41,7 @@ public class BorrowListQueryDto {
                 .publisher(publisher)
                 .viewCount(viewCount)
                 .thumbnail(thumbnail)
+                .createAt(createdAt)
                 .build();
     }
 
