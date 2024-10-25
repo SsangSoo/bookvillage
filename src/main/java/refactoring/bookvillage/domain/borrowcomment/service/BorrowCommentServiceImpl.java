@@ -29,13 +29,13 @@ public class BorrowCommentServiceImpl implements BorrowCommentService {
 
     @Override
     public Long create(CreateBorrowCommentDto createBorrowCommentDto) {
-        final BorrowComment borrowComment = BorrowComment.createBorrowComment(createBorrowCommentDto);
+        BorrowComment borrowComment = BorrowComment.createBorrowComment(createBorrowCommentDto);
         return borrowCommentRepository.save(borrowComment).getId();
     }
 
     @Override
     public void update(UpdateBorrowCommentDto updateBorrowCommentDto) {
-        final Borrow borrow = borrowRepository.findById(updateBorrowCommentDto.getBorrowId()).orElseThrow(() -> new BusinessException(NOT_EXIST_CONTENT));
+        Borrow borrow = borrowRepository.findById(updateBorrowCommentDto.getBorrowId()).orElseThrow(() -> new BusinessException(NOT_EXIST_CONTENT));
         borrow.isDeleteValid();
 
         BorrowComment borrowComment = borrowCommentRepository.findById(updateBorrowCommentDto.getBorrowCommentId()).orElseThrow(() -> new BusinessException(NOT_EXIST_COMMENT));
@@ -47,4 +47,22 @@ public class BorrowCommentServiceImpl implements BorrowCommentService {
 
         borrowComment.update(updateBorrowCommentDto.getComment());
     }
+
+    @Override
+    public void delete(Long borrowId, Long borrowCommentId, Long memberId) {
+        Borrow borrow = borrowRepository.findById(borrowId).orElseThrow(() -> new BusinessException(NOT_EXIST_CONTENT));
+        borrow.isDeleteValid();
+
+        BorrowComment borrowComment = borrowCommentRepository.findById(borrowCommentId).orElseThrow(() -> new BusinessException(NOT_EXIST_COMMENT));
+        borrowComment.borrowValid(borrowId);
+        borrowComment.writerValid(borrowId);
+        borrowComment.isDeleteValid();
+
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new BusinessException(NOT_EXIST_MEMBER));
+        member.deleteValid();
+
+        borrowComment.delete();
+    }
+
+
 }

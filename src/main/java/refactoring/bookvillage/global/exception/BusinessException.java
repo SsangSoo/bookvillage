@@ -26,9 +26,12 @@ public class BusinessException extends RuntimeException {
         DELETED_COMMENT(404, "삭제된 댓글입니다."),
         DELETED_MEMBER(404, "삭제된 회원입니다."),
 
+        ALREADY_DELETED_COMMENT(404, "이미 삭제된 댓글입니다."),
+
         ACCESS_OTHER_WRITER(404, "작성자 외 회원이 접근 중입니다"),
 
         OTHER_MAIN_CONTENT(404, "작성하고자 하는 글과 다른 글에 접근중입니다.");
+
 
 
 

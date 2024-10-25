@@ -16,6 +16,7 @@ import refactoring.bookvillage.domain.borrowcomment.repository.BorrowCommentRepo
 import refactoring.bookvillage.domain.borrowcomment.service.dto.UpdateBorrowCommentDto;
 import refactoring.bookvillage.domain.member.entity.Member;
 import refactoring.bookvillage.domain.member.repository.MemberRepository;
+import refactoring.bookvillage.global.exception.BusinessException;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -81,6 +82,48 @@ class BorrowCommentServiceImplTest {
         // then
         assertThat(borrowComment).extracting("comment", "memberId", "borrowId")
                 .containsExactlyInAnyOrder(savedMember.getId(), savedBorrow.getId(), updateBorrowCommentDto.getComment());
+    }
+
+    @Test
+    @DisplayName("대여 게시글 댓글을 삭제할 수 있다.")
+    void borrowCommentDeleteTest() {
+        // given
+        Member savedMember = memberRepository.save(Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null));
+        Borrow savedBorrow = borrowRepository.save(Borrow.createBorrow(getCreateBorrowDto(savedMember.getId())));
+
+        CreateBorrowCommentRequest createBorrowCommentRequest = getCreateBorrowCommentRequest("댓글을 달다!");
+        Long borrowCommentId = borrowCommentService.create(createBorrowCommentRequest.requestToServiceDto(savedMember.getId(), savedBorrow.getId()));
+
+
+        //when
+        borrowCommentService.delete(savedBorrow.getId(), borrowCommentId, savedMember.getId());
+        BorrowComment borrowComment = borrowCommentRepository.findById(borrowCommentId).orElseThrow();
+
+        //then
+        assertThat(borrowComment.isDeleteTag()).isTrue();
+    }
+
+    @Test
+    @DisplayName("대여 게시글 댓글을 삭제한 상태에서 또 삭제를 할 수 없다.")
+    void borrowCommentDoubleDeleteTest() {
+        // given
+        Member savedMember = memberRepository.save(Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null));
+        Borrow savedBorrow = borrowRepository.save(Borrow.createBorrow(getCreateBorrowDto(savedMember.getId())));
+
+        CreateBorrowCommentRequest createBorrowCommentRequest = getCreateBorrowCommentRequest("댓글을 달다!");
+        Long borrowCommentId = borrowCommentService.create(createBorrowCommentRequest.requestToServiceDto(savedMember.getId(), savedBorrow.getId()));
+
+        borrowCommentService.delete(savedBorrow.getId(), borrowCommentId, savedMember.getId());
+
+        //when, then
+        assertThatThrownBy(() -> borrowCommentService.delete(savedBorrow.getId(), borrowCommentId, savedMember.getId()))
+                .hasMessage("이미 삭제된 댓글입니다.")
+                .isInstanceOf(BusinessException.class);
+
+        BorrowComment borrowComment = borrowCommentRepository.findById(borrowCommentId).orElseThrow();
+
+        assertThat(borrowComment.isDeleteTag()).isTrue();
+
     }
 
 

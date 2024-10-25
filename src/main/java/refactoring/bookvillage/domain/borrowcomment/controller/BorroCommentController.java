@@ -38,4 +38,13 @@ public class BorroCommentController {
         borrowCommentService.update(updateRequestDto.requestToServiceDto(memberId, borrowId, borrowCommentId));
         return ResponseEntity.ok(new MessageResponse(MessageResponse.MessageCode.BORROW_COMMENT_UPDATED));
     }
+
+    @DeleteMapping("/{borrowCommentId}")
+    public ResponseEntity<MessageResponse> deleteBorrowComment(HttpServletRequest request,
+                                                               @PathVariable("borrowId") Long borrowId,
+                                                               @PathVariable("borrowCommentId") Long borrowCommentId) {
+        Long memberId = (Long) request.getAttribute("memberId");
+        borrowCommentService.delete(borrowId, borrowCommentId, memberId);
+        return ResponseEntity.ok(new MessageResponse(MessageResponse.MessageCode.BORROW_COMMENT_DELETED));
+    }
 }

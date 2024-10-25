@@ -16,7 +16,8 @@ public class MessageResponse {
     public enum MessageCode {
         BORROW_UPDATED("대여 게시글이 수정되었습니다."),
         BORROW_DELETED("대여 게시글이 삭제되었습니다."),
-        BORROW_COMMENT_UPDATED("대여 게시글 댓글이 수정되었습니다.");
+        BORROW_COMMENT_UPDATED("대여 게시글 댓글이 수정되었습니다."),
+        BORROW_COMMENT_DELETED("대여 게시글 댓글이 삭제되었습니다.");
 
         String message;
 

@@ -73,4 +73,9 @@ public class BorrowComment extends BaseEntity {
     }
 
 
+    public void isDeleteValid() {
+        if(isDeleteTag()) {
+            throw new BusinessException(BusinessException.ExceptionCode.ALREADY_DELETED_COMMENT);
+        }
+    }
 }

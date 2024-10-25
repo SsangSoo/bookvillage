@@ -22,20 +22,20 @@ public class BorrowController {
     private final BorrowService borrowService;
 
     @PostMapping
-    public ResponseEntity<Long> createBorrow(@RequestBody @Valid CreateBorrowRequest createRequestDto,
+    public ResponseEntity<BorrowResponse> createBorrow(@RequestBody @Valid CreateBorrowRequest createRequestDto,
                                                           HttpServletRequest request) {
         Long memberId = (Long)request.getAttribute("memberId"); // 시큐리티 적용 후 바뀔 예정
-        Long borrowId = borrowService.create(createRequestDto.createRequestToServiceDto(memberId));
-        return new ResponseEntity<>(borrowId, HttpStatus.CREATED);
+        BorrowResponse borrowResponse = borrowService.create(createRequestDto.createRequestToServiceDto(memberId));
+        return new ResponseEntity<>(borrowResponse, HttpStatus.CREATED);
     }
 
     @PutMapping("/{borrowId}")
-    public ResponseEntity<MessageResponse> updateBorrow(@RequestBody @Valid UpdateBorrowRequest updateRequestDto,
+    public ResponseEntity<BorrowResponse> updateBorrow(@RequestBody @Valid UpdateBorrowRequest updateRequestDto,
                                                         @PathVariable("borrowId") Long borrowId,
                                                         HttpServletRequest request) {
         Long memberId = (Long) request.getAttribute("memberId");
-        borrowService.update(updateRequestDto.updateRequestToServiceDto(borrowId, memberId));
-        return new ResponseEntity<>(new MessageResponse(MessageResponse.MessageCode.BORROW_UPDATED), HttpStatus.OK);
+        BorrowResponse borrowResponse = borrowService.update(updateRequestDto.updateRequestToServiceDto(borrowId, memberId));
+        return new ResponseEntity<>(borrowResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("/{borrowId}")

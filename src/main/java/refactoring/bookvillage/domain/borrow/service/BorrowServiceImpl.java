@@ -30,8 +30,8 @@ public class BorrowServiceImpl implements BorrowService {
     private final BorrowQueryRepository queryRepository;
 
     @Override
-    public Long create(CreateBorrowDto createBorrowDto) {
-        final Member member = memberRepository.findById(createBorrowDto.getMemberId())
+    public BorrowResponse create(CreateBorrowDto createBorrowDto) {
+        Member member = memberRepository.findById(createBorrowDto.getMemberId())
                 .orElseThrow(() -> new BusinessException(NOT_EXIST_MEMBER));
 
         // 유령이거나, 삭제된 회원이 접근할 경우
@@ -39,20 +39,41 @@ public class BorrowServiceImpl implements BorrowService {
             throw new BusinessException(INVALID_EXCEPTION);
         }
 
-        final Borrow borrow = Borrow.createBorrow(createBorrowDto);
-        return borrowRepository.save(borrow).getId();
+        Borrow borrow = Borrow.createBorrow(createBorrowDto);
+        Borrow savedBorrow = borrowRepository.save(borrow);
+
+        return savedBorrow.toResponseDto(member.getId(), member.isAdmin());
     }
 
     @Override
-    public void update(UpdateBorrowDto updateBorrowDto) {
+    public BorrowResponse update(UpdateBorrowDto updateBorrowDto) {
+        Member member = memberRepository.findById(updateBorrowDto.getMemberId())
+                .orElseThrow(() -> new BusinessException(NOT_EXIST_MEMBER));
+
+        // 유령이거나, 삭제된 회원이 접근할 경우
+        if(member.isGhost() || member.isDeleteTag()) {
+            throw new BusinessException(INVALID_EXCEPTION);
+        }
+
         Borrow borrow = borrowRepository.findById(updateBorrowDto.getBorrowId()).orElseThrow(() -> new BusinessException(NO_CONTENT));
         borrow.isDeleteValid();
         borrow.otherWriterAccessVerify(updateBorrowDto.getMemberId());
         borrow.update(updateBorrowDto);
+
+        return borrow.toResponseDto(member.getId(), member.isAdmin());
+
     }
 
     @Override
     public void delete(Long borrowId, Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessException(NOT_EXIST_MEMBER));
+
+        // 유령이거나, 삭제된 회원이 접근할 경우
+        if(member.isGhost() || member.isDeleteTag()) {
+            throw new BusinessException(INVALID_EXCEPTION);
+        }
+
         Borrow borrow = borrowRepository.findById(borrowId).orElseThrow(() -> new BusinessException(NOT_EXIST_CONTENT));
         borrow.isDeleteValid();
         borrow.otherWriterAccessVerify(memberId);
@@ -71,9 +92,8 @@ public class BorrowServiceImpl implements BorrowService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() ->  new BusinessException(NOT_EXIST_MEMBER));
 
-        boolean deleted = findBorrow.isDeleteTag();
 
-        if(deleted && member.isGhostOrMember()) { // 삭제되었는데, 멤버 혹은 유령 회원이라면
+        if(findBorrow.isDeleteTag() && member.isGhostOrMember()) { // 삭제되었는데, 멤버 혹은 유령 회원이라면
             throw new BusinessException(DELETED_CONTENT);
         }
 
@@ -88,8 +108,8 @@ public class BorrowServiceImpl implements BorrowService {
     @Override
     @Transactional(readOnly = true)
     public List<BorrowListResponse> findBorrowList(Long memberId, BorrowCondition condition) {
-        final Member member = memberRepository.findById(memberId).orElseThrow(() -> new BusinessException(NOT_EXIST_MEMBER));
-        final List<BorrowListQueryDto> borrowList = queryRepository.getBorrowList(member.getRole().name(), condition.getKeyword());
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new BusinessException(NOT_EXIST_MEMBER));
+        List<BorrowListQueryDto> borrowList = queryRepository.getBorrowList(member.getRole().name(), condition.getKeyword());
 
         return borrowList.stream()
                 .map(BorrowListQueryDto::toResponseDto)

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import refactoring.bookvillage.domain.borrow.controller.dto.BorrowResponse;
 import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequest;
 import refactoring.bookvillage.domain.borrow.entity.Borrow;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
@@ -48,8 +49,8 @@ class BorrowServiceImplTest {
         CreateBorrowDto createBorrowDto = getCreateBorrowDto(savedMember.getId());
 
         // when
-        Long borrowId = borrowService.create(createBorrowDto);
-        Borrow findBorrow = borrowRepository.findById(borrowId).orElseThrow();
+        BorrowResponse borrowResponse = borrowService.create(createBorrowDto);
+        Borrow findBorrow = borrowRepository.findById(borrowResponse.getId()).orElseThrow();
 
         // then
         assertThat(findBorrow.getTitle()).isEqualTo(createBorrowDto.getTitle());
@@ -65,14 +66,14 @@ class BorrowServiceImplTest {
         Member savedMember = memberRepository.save(Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null));
         CreateBorrowDto createBorrowDto = getCreateBorrowDto(savedMember.getId());
 
-        Long borrowId = borrowService.create(createBorrowDto);
-        Borrow findBorrow = borrowRepository.findById(borrowId).orElseThrow();
+        BorrowResponse borrowResponse = borrowService.create(createBorrowDto);
+        Borrow findBorrow = borrowRepository.findById(borrowResponse.getId()).orElseThrow();
 
         UpdateBorrowRequest updateRequestDto = getUpdateRequestDto();
 
         // when
         borrowService.update(updateRequestDto.updateRequestToServiceDto(findBorrow.getId(), savedMember.getId()));
-        Borrow findUpdatedBorrow = borrowRepository.findById(borrowId).orElseThrow();
+        Borrow findUpdatedBorrow = borrowRepository.findById(borrowResponse.getId()).orElseThrow();
 
         // then
         assertThat(findUpdatedBorrow.getTitle()).isEqualTo(updateRequestDto.getTitle());
@@ -88,8 +89,8 @@ class BorrowServiceImplTest {
         Member soo = memberRepository.save(Member.createMember("ss@eamil.com", "강", "수", Member.MemberState.NEW, null));
         CreateBorrowDto createBorrowDto = getCreateBorrowDto(ssangsoo.getId());
 
-        Long borrowId = borrowService.create(createBorrowDto);
-        Borrow findBorrow = borrowRepository.findById(borrowId).orElseThrow();
+        BorrowResponse borrowResponse = borrowService.create(createBorrowDto);
+        Borrow findBorrow = borrowRepository.findById(borrowResponse.getId()).orElseThrow();
 
         UpdateBorrowRequest updateRequestDto = getUpdateRequestDto();
 
@@ -107,14 +108,14 @@ class BorrowServiceImplTest {
         Member savedMember = memberRepository.save(Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null));
         CreateBorrowDto createBorrowDto = getCreateBorrowDto(savedMember.getId());
 
-        Long borrowId = borrowService.create(createBorrowDto);
-        Borrow findBorrow = borrowRepository.findById(borrowId).orElseThrow();
+        BorrowResponse borrowResponse = borrowService.create(createBorrowDto);
+        Borrow findBorrow = borrowRepository.findById(borrowResponse.getId()).orElseThrow();
 
         UpdateBorrowRequest updateRequestDto = getUpdateRequestDto();
 
         // when
         borrowService.delete(findBorrow.getId(), savedMember.getId());
-        Borrow findUpdatedBorrow = borrowRepository.findById(borrowId).orElseThrow();
+        Borrow findUpdatedBorrow = borrowRepository.findById(borrowResponse.getId()).orElseThrow();
 
         // then
         assertThat(findBorrow.isDeleteTag()).isTrue();
@@ -130,8 +131,8 @@ class BorrowServiceImplTest {
         Member soo = memberRepository.save(Member.createMember("ss@eamil.com", "강", "수", Member.MemberState.NEW, null));
         CreateBorrowDto createBorrowDto = getCreateBorrowDto(ssangsoo.getId());
 
-        Long borrowId = borrowService.create(createBorrowDto);
-        Borrow findBorrow = borrowRepository.findById(borrowId).orElseThrow();
+        BorrowResponse borrowResponse = borrowService.create(createBorrowDto);
+        Borrow findBorrow = borrowRepository.findById(borrowResponse.getId()).orElseThrow();
 
         // when-then
         assertThatThrownBy(() -> borrowService.delete(findBorrow.getId(), soo.getId()))

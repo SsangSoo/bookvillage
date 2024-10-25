@@ -8,4 +8,6 @@ public interface BorrowCommentService {
     Long create(CreateBorrowCommentDto createBorrowCommentDto);
 
     void update(UpdateBorrowCommentDto updateBorrowCommentDto);
+
+    void delete(Long borrowId, Long borrowCommentId, Long memberId);
 }
