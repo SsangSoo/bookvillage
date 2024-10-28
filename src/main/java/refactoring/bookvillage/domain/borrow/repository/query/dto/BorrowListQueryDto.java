@@ -3,7 +3,7 @@ package refactoring.bookvillage.domain.borrow.repository.query.dto;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import refactoring.bookvillage.domain.borrow.controller.dto.BorrowListResponse;
+import refactoring.bookvillage.domain.borrow.controller.borrowdto.BorrowListResponse;
 
 import java.time.LocalDateTime;
 

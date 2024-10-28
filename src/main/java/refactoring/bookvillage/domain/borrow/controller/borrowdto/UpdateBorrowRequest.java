@@ -1,15 +1,15 @@
-package refactoring.bookvillage.domain.borrow.controller.dto;
+package refactoring.bookvillage.domain.borrow.controller.borrowdto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
+import refactoring.bookvillage.domain.borrow.service.dto.borrowdto.UpdateBorrowDto;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateBorrowRequest {
+public class UpdateBorrowRequest {
 
     @NotBlank(message = "대여 게시글 제목은 필수입니다.")
     private String title;
@@ -26,17 +26,16 @@ public class CreateBorrowRequest {
 
     private String thumbnail;
 
-
-    public CreateBorrowDto createRequestToServiceDto(Long memberId) {
-        return CreateBorrowDto.builder()
+    public UpdateBorrowDto updateRequestToServiceDto(Long borrowId, Long memberId) {
+        return UpdateBorrowDto.builder()
                 .title(title)
                 .content(content)
                 .bookTitle(bookTitle)
                 .author(author)
                 .publisher(publisher)
                 .thumbnail(thumbnail)
+                .borrowId(borrowId)
                 .memberId(memberId)
                 .build();
     }
-
 }

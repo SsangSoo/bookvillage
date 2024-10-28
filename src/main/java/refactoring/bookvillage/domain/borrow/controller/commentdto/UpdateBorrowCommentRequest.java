@@ -1,8 +1,8 @@
-package refactoring.bookvillage.domain.borrowcomment.controller.dto;
+package refactoring.bookvillage.domain.borrow.controller.commentdto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import refactoring.bookvillage.domain.borrowcomment.service.dto.UpdateBorrowCommentDto;
+import refactoring.bookvillage.domain.borrow.service.dto.commentdto.UpdateBorrowCommentDto;
 
 @AllArgsConstructor
 public class UpdateBorrowCommentRequest {

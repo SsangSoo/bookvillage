@@ -5,11 +5,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import refactoring.bookvillage.domain.borrow.controller.dto.BorrowResponse;
-import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
+import refactoring.bookvillage.domain.borrow.controller.borrowdto.BorrowResponse;
+import refactoring.bookvillage.domain.borrow.service.dto.borrowdto.CreateBorrowDto;
 import refactoring.bookvillage.domain.audit.BaseEntity;
-import refactoring.bookvillage.domain.borrow.service.dto.UpdateBorrowDto;
-import refactoring.bookvillage.domain.member.entity.Member;
+import refactoring.bookvillage.domain.borrow.service.dto.borrowdto.UpdateBorrowDto;
 import refactoring.bookvillage.global.exception.BusinessException;
 
 @Getter

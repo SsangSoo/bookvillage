@@ -1,8 +1,10 @@
-package refactoring.bookvillage.domain.borrowcomment.controller.dto;
+package refactoring.bookvillage.domain.borrow.controller.commentdto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 @Builder
 @AllArgsConstructor
 public class BorrowCommentResponse {

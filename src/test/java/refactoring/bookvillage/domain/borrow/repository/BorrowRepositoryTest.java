@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import refactoring.bookvillage.domain.borrow.entity.Borrow;
-import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
+import refactoring.bookvillage.domain.borrow.service.dto.borrowdto.CreateBorrowDto;
 
 import java.util.Optional;
 

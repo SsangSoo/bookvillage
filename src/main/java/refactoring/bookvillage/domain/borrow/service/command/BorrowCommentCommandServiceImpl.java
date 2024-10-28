@@ -1,16 +1,16 @@
-package refactoring.bookvillage.domain.borrowcomment.service;
+package refactoring.bookvillage.domain.borrow.service.command;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import refactoring.bookvillage.domain.borrow.entity.BorrowComment;
+import refactoring.bookvillage.domain.borrow.repository.BorrowCommentRepository;
+import refactoring.bookvillage.domain.borrow.service.dto.commentdto.CreateBorrowCommentDto;
 import refactoring.bookvillage.domain.borrow.entity.Borrow;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
-import refactoring.bookvillage.domain.borrowcomment.controller.dto.BorrowCommentResponse;
-import refactoring.bookvillage.domain.borrowcomment.entity.BorrowComment;
-import refactoring.bookvillage.domain.borrowcomment.repository.BorrowCommentRepository;
-import refactoring.bookvillage.domain.borrowcomment.service.dto.CreateBorrowCommentDto;
-import refactoring.bookvillage.domain.borrowcomment.service.dto.UpdateBorrowCommentDto;
+import refactoring.bookvillage.domain.borrow.controller.commentdto.BorrowCommentResponse;
+import refactoring.bookvillage.domain.borrow.service.dto.commentdto.UpdateBorrowCommentDto;
 import refactoring.bookvillage.domain.member.entity.Member;
 import refactoring.bookvillage.domain.member.repository.MemberRepository;
 import refactoring.bookvillage.global.exception.BusinessException;
@@ -21,7 +21,7 @@ import static refactoring.bookvillage.global.exception.BusinessException.Excepti
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class BorrowCommentServiceImpl implements BorrowCommentService {
+public class BorrowCommentCommandServiceImpl implements BorrowCommentCommandService {
 
     private final BorrowCommentRepository borrowCommentRepository;
     private final BorrowRepository borrowRepository;
@@ -34,7 +34,7 @@ public class BorrowCommentServiceImpl implements BorrowCommentService {
                 .orElseThrow(() ->  new BusinessException(NOT_EXIST_MEMBER));
         member.verifyWhetherGhostAndDeletedMember();
 
-        BorrowComment borrowComment = BorrowComment.createBorrowComment(createBorrowCommentDto);
+        BorrowComment borrowComment = BorrowComment.createBorrowComment(createBorrowCommentDto, member.getNickname());
         BorrowComment savedBorrowComment = borrowCommentRepository.save(borrowComment);
         return savedBorrowComment.toResponseDto(member.getNickname());
     }

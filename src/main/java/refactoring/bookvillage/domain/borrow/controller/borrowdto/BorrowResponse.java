@@ -1,10 +1,12 @@
-package refactoring.bookvillage.domain.borrow.controller.dto;
+package refactoring.bookvillage.domain.borrow.controller.borrowdto;
 
 
 import lombok.Builder;
 import lombok.Getter;
+import refactoring.bookvillage.domain.borrow.controller.commentdto.BorrowCommentResponse;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class BorrowResponse {
@@ -30,10 +32,11 @@ public class BorrowResponse {
 
     private LocalDateTime createdAt;
 
+    private List<BorrowCommentResponse> borrowCommentResponseList;
 
 
     @Builder
-    private BorrowResponse(Long id, String title, String content, String bookTitle, String author, String publisher, Long viewCount, String thumbnail, boolean writerWhether, boolean isAdmin, LocalDateTime createdAt) {
+    private BorrowResponse(Long id, String title, String content, String bookTitle, String author, String publisher, Long viewCount, String thumbnail, boolean writerWhether, boolean isAdmin, LocalDateTime createdAt, List<BorrowCommentResponse> borrowCommentResponseList) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -45,5 +48,6 @@ public class BorrowResponse {
         this.writerWhether = writerWhether;
         this.isAdmin = isAdmin;
         this.createdAt = createdAt;
+        this.borrowCommentResponseList = borrowCommentResponseList;
     }
 }

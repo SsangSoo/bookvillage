@@ -5,27 +5,27 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import refactoring.bookvillage.domain.borrow.service.command.BorrowCommentCommandService;
 import refactoring.bookvillage.domain.borrow.entity.Borrow;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
-import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
-import refactoring.bookvillage.domain.borrowcomment.controller.dto.CreateBorrowCommentRequest;
-import refactoring.bookvillage.domain.borrowcomment.controller.dto.UpdateBorrowCommentRequest;
-import refactoring.bookvillage.domain.borrowcomment.entity.BorrowComment;
-import refactoring.bookvillage.domain.borrowcomment.repository.BorrowCommentRepository;
-import refactoring.bookvillage.domain.borrowcomment.service.dto.UpdateBorrowCommentDto;
+import refactoring.bookvillage.domain.borrow.service.dto.borrowdto.CreateBorrowDto;
+import refactoring.bookvillage.domain.borrow.controller.commentdto.BorrowCommentResponse;
+import refactoring.bookvillage.domain.borrow.controller.commentdto.CreateBorrowCommentRequest;
+import refactoring.bookvillage.domain.borrow.controller.commentdto.UpdateBorrowCommentRequest;
+import refactoring.bookvillage.domain.borrow.entity.BorrowComment;
+import refactoring.bookvillage.domain.borrow.repository.BorrowCommentRepository;
+import refactoring.bookvillage.domain.borrow.service.dto.commentdto.UpdateBorrowCommentDto;
 import refactoring.bookvillage.domain.member.entity.Member;
 import refactoring.bookvillage.domain.member.repository.MemberRepository;
 import refactoring.bookvillage.global.exception.BusinessException;
 
 import static org.assertj.core.api.Assertions.*;
 
-@Transactional
 @SpringBootTest
 class BorrowCommentServiceImplTest {
 
     @Autowired
-    BorrowCommentService borrowCommentService;
+    BorrowCommentCommandService borrowCommentService;
 
     @Autowired
     BorrowCommentRepository borrowCommentRepository;
@@ -48,18 +48,19 @@ class BorrowCommentServiceImplTest {
     @DisplayName("대여 게시글 댓글을 작성할 수 있다.")
     void createBorrowCommentTest() {
         //given
-        Long memberId = 1L;
-        Long borrowId = 23L;
+        Member savedMember = memberRepository.save(Member.createMember("email", "킴", "별명:쌩수", Member.MemberState.NEW, null));
+        Borrow savedBorrow = borrowRepository.save(Borrow.createBorrow(getCreateBorrowDto(savedMember.getId())));
+
         CreateBorrowCommentRequest createBorrowCommentRequest = getCreateBorrowCommentRequest("댓글을 달다!");
 
         //when
-        Long borrowCommentId = borrowCommentService.create(createBorrowCommentRequest.requestToServiceDto(memberId, borrowId));
-        BorrowComment borrowComment = borrowCommentRepository.findById(borrowCommentId).orElseThrow();
+        BorrowCommentResponse borrowCommentResponse = borrowCommentService.create(createBorrowCommentRequest.requestToServiceDto(savedMember.getId(), savedBorrow.getId()));
+        BorrowComment borrowComment = borrowCommentRepository.findById(savedBorrow.getId()).orElseThrow();
 
         //then
         assertThat(borrowComment)
                 .extracting("comment", "memberId", "borrowId")
-                .containsExactlyInAnyOrder("댓글을 달다!", 1L, 23L);
+                .containsExactlyInAnyOrder("댓글을 달다!", savedMember.getId(), savedBorrow.getId());
     }
 
     @Test
@@ -70,14 +71,14 @@ class BorrowCommentServiceImplTest {
         Borrow savedBorrow = borrowRepository.save(Borrow.createBorrow(getCreateBorrowDto(savedMember.getId())));
 
         CreateBorrowCommentRequest createBorrowCommentRequest = getCreateBorrowCommentRequest("댓글을 달다!");
-        Long borrowCommentId = borrowCommentService.create(createBorrowCommentRequest.requestToServiceDto(savedMember.getId(), savedBorrow.getId()));
+        BorrowCommentResponse borrowCommentResponse = borrowCommentService.create(createBorrowCommentRequest.requestToServiceDto(savedMember.getId(), savedBorrow.getId()));
 
         UpdateBorrowCommentRequest updateBorrowCommentRequest = new UpdateBorrowCommentRequest("댓글 수정");
-        UpdateBorrowCommentDto updateBorrowCommentDto = updateBorrowCommentRequest.requestToServiceDto(savedMember.getId(), savedBorrow.getId(), borrowCommentId);
+        UpdateBorrowCommentDto updateBorrowCommentDto = updateBorrowCommentRequest.requestToServiceDto(savedMember.getId(), savedBorrow.getId(), borrowCommentResponse.getId());
 
         //when
         borrowCommentService.update(updateBorrowCommentDto);
-        BorrowComment borrowComment = borrowCommentRepository.findById(borrowCommentId).orElseThrow();
+        BorrowComment borrowComment = borrowCommentRepository.findById(borrowCommentResponse.getId()).orElseThrow();
 
         // then
         assertThat(borrowComment).extracting("comment", "memberId", "borrowId")
@@ -92,12 +93,12 @@ class BorrowCommentServiceImplTest {
         Borrow savedBorrow = borrowRepository.save(Borrow.createBorrow(getCreateBorrowDto(savedMember.getId())));
 
         CreateBorrowCommentRequest createBorrowCommentRequest = getCreateBorrowCommentRequest("댓글을 달다!");
-        Long borrowCommentId = borrowCommentService.create(createBorrowCommentRequest.requestToServiceDto(savedMember.getId(), savedBorrow.getId()));
+        BorrowCommentResponse borrowCommentResponse = borrowCommentService.create(createBorrowCommentRequest.requestToServiceDto(savedMember.getId(), savedBorrow.getId()));
 
 
         //when
-        borrowCommentService.delete(savedBorrow.getId(), borrowCommentId, savedMember.getId());
-        BorrowComment borrowComment = borrowCommentRepository.findById(borrowCommentId).orElseThrow();
+        borrowCommentService.delete(savedBorrow.getId(), borrowCommentResponse.getId(), savedMember.getId());
+        BorrowComment borrowComment = borrowCommentRepository.findById(borrowCommentResponse.getId()).orElseThrow();
 
         //then
         assertThat(borrowComment.isDeleteTag()).isTrue();
@@ -111,16 +112,16 @@ class BorrowCommentServiceImplTest {
         Borrow savedBorrow = borrowRepository.save(Borrow.createBorrow(getCreateBorrowDto(savedMember.getId())));
 
         CreateBorrowCommentRequest createBorrowCommentRequest = getCreateBorrowCommentRequest("댓글을 달다!");
-        Long borrowCommentId = borrowCommentService.create(createBorrowCommentRequest.requestToServiceDto(savedMember.getId(), savedBorrow.getId()));
+        BorrowCommentResponse borrowCommentResponse = borrowCommentService.create(createBorrowCommentRequest.requestToServiceDto(savedMember.getId(), savedBorrow.getId()));
 
-        borrowCommentService.delete(savedBorrow.getId(), borrowCommentId, savedMember.getId());
+        borrowCommentService.delete(savedBorrow.getId(), borrowCommentResponse.getId(), savedMember.getId());
 
         //when, then
-        assertThatThrownBy(() -> borrowCommentService.delete(savedBorrow.getId(), borrowCommentId, savedMember.getId()))
+        assertThatThrownBy(() -> borrowCommentService.delete(savedBorrow.getId(), borrowCommentResponse.getId(), savedMember.getId()))
                 .hasMessage("이미 삭제된 댓글입니다.")
                 .isInstanceOf(BusinessException.class);
 
-        BorrowComment borrowComment = borrowCommentRepository.findById(borrowCommentId).orElseThrow();
+        BorrowComment borrowComment = borrowCommentRepository.findById(borrowCommentResponse.getId()).orElseThrow();
 
         assertThat(borrowComment.isDeleteTag()).isTrue();
 

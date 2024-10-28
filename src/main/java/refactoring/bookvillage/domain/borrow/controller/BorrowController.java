@@ -7,8 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import refactoring.bookvillage.domain.borrow.controller.dto.*;
-import refactoring.bookvillage.domain.borrow.service.BorrowService;
+import refactoring.bookvillage.domain.borrow.controller.borrowdto.*;
+import refactoring.bookvillage.domain.borrow.service.command.BorrowCommandService;
 import refactoring.bookvillage.global.util.response.MessageResponse;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BorrowController {
 
-    private final BorrowService borrowService;
+    private final BorrowCommandService borrowService;
 
     @PostMapping
     public ResponseEntity<BorrowResponse> createBorrow(@RequestBody @Valid CreateBorrowRequest createRequestDto,

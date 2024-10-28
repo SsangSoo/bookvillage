@@ -1,4 +1,4 @@
-package refactoring.bookvillage.domain.borrow.controller.dto;
+package refactoring.bookvillage.domain.borrow.controller.borrowdto;
 
 import lombok.Builder;
 

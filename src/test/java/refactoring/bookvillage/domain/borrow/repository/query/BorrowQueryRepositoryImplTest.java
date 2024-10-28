@@ -10,7 +10,7 @@ import refactoring.bookvillage.configuration.TestQueryDslConfig;
 import refactoring.bookvillage.domain.borrow.entity.Borrow;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
 import refactoring.bookvillage.domain.borrow.repository.query.dto.BorrowListQueryDto;
-import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
+import refactoring.bookvillage.domain.borrow.service.dto.borrowdto.CreateBorrowDto;
 import refactoring.bookvillage.domain.member.entity.Member;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package refactoring.bookvillage.domain.borrowcomment.entity;
+package refactoring.bookvillage.domain.borrow.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -6,10 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import refactoring.bookvillage.domain.audit.BaseEntity;
-import refactoring.bookvillage.domain.borrowcomment.controller.dto.BorrowCommentResponse;
-import refactoring.bookvillage.domain.borrowcomment.service.dto.CreateBorrowCommentDto;
-import refactoring.bookvillage.domain.borrowcomment.service.dto.UpdateBorrowCommentDto;
-import refactoring.bookvillage.domain.member.entity.Member;
+import refactoring.bookvillage.domain.borrow.controller.commentdto.BorrowCommentResponse;
+import refactoring.bookvillage.domain.borrow.service.dto.commentdto.CreateBorrowCommentDto;
 import refactoring.bookvillage.global.exception.BusinessException;
 
 @Getter
@@ -28,6 +26,9 @@ public class BorrowComment extends BaseEntity {
     @Column(name = "member_id")
     private Long memberId;
 
+    @Column(name = "writer")
+    private String writer;
+
     @Column(name = "borrow_id")
     private Long borrowId;
 
@@ -39,17 +40,19 @@ public class BorrowComment extends BaseEntity {
 
 
     @Builder
-    private BorrowComment(String content, Long memberId, Long borrowId) {
+    private BorrowComment(String content, Long memberId, String writer, Long borrowId) {
         this.comment = content;
         this.memberId = memberId;
+        this.writer = writer;
         this.borrowId = borrowId;
     }
 
-    public static BorrowComment createBorrowComment(CreateBorrowCommentDto createBorrowCommentDto) {
+    public static BorrowComment createBorrowComment(CreateBorrowCommentDto createBorrowCommentDto, String writer) {
         return BorrowComment.builder()
                 .content(createBorrowCommentDto.getComment())
                 .borrowId(createBorrowCommentDto.getBorrowId())
                 .memberId(createBorrowCommentDto.getMemberId())
+                .writer(writer)
                 .build();
     }
 

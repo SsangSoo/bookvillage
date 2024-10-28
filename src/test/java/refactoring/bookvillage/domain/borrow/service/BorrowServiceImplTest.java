@@ -6,11 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import refactoring.bookvillage.domain.borrow.controller.dto.BorrowResponse;
-import refactoring.bookvillage.domain.borrow.controller.dto.UpdateBorrowRequest;
+import refactoring.bookvillage.domain.borrow.controller.borrowdto.BorrowResponse;
+import refactoring.bookvillage.domain.borrow.controller.borrowdto.UpdateBorrowRequest;
 import refactoring.bookvillage.domain.borrow.entity.Borrow;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
-import refactoring.bookvillage.domain.borrow.service.dto.CreateBorrowDto;
+import refactoring.bookvillage.domain.borrow.service.dto.borrowdto.CreateBorrowDto;
+import refactoring.bookvillage.domain.borrow.service.command.BorrowCommandService;
 import refactoring.bookvillage.domain.member.entity.Member;
 import refactoring.bookvillage.domain.member.repository.MemberRepository;
 import refactoring.bookvillage.global.exception.BusinessException;
@@ -23,7 +24,7 @@ import static org.assertj.core.api.Assertions.*;
 class BorrowServiceImplTest {
 
     @Autowired
-    private BorrowService borrowService;
+    private BorrowCommandService borrowService;
 
     @Autowired
     private BorrowRepository borrowRepository;
