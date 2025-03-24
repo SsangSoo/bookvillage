@@ -9,10 +9,10 @@ import refactoring.bookvillage.domain.borrow.service.command.BorrowCommentComman
 import refactoring.bookvillage.domain.borrow.entity.Borrow;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
 import refactoring.bookvillage.domain.borrow.service.dto.borrowdto.CreateBorrowDto;
-import refactoring.bookvillage.domain.borrow.controller.commentdto.BorrowCommentResponse;
-import refactoring.bookvillage.domain.borrow.controller.commentdto.CreateBorrowCommentRequest;
-import refactoring.bookvillage.domain.borrow.controller.commentdto.UpdateBorrowCommentRequest;
-import refactoring.bookvillage.domain.borrow.entity.BorrowComment;
+import refactoring.bookvillage.domain.borrowcomment.controller.response.BorrowCommentResponse;
+import refactoring.bookvillage.domain.borrowcomment.controller.request.RegisterBorrowCommentRequest;
+import refactoring.bookvillage.domain.borrowcomment.controller.request.UpdateBorrowCommentRequest;
+import refactoring.bookvillage.domain.borrowcomment.entity.BorrowComment;
 import refactoring.bookvillage.domain.borrow.repository.BorrowCommentRepository;
 import refactoring.bookvillage.domain.borrow.service.dto.commentdto.UpdateBorrowCommentDto;
 import refactoring.bookvillage.domain.member.entity.Member;
@@ -51,10 +51,10 @@ class BorrowCommentServiceImplTest {
         Member savedMember = memberRepository.save(Member.createMember("email", "킴", "별명:쌩수", Member.MemberState.NEW, null));
         Borrow savedBorrow = borrowRepository.save(Borrow.createBorrow(getCreateBorrowDto(savedMember.getId())));
 
-        CreateBorrowCommentRequest createBorrowCommentRequest = getCreateBorrowCommentRequest("댓글을 달다!");
+        RegisterBorrowCommentRequest registerBorrowCommentRequest = getCreateBorrowCommentRequest("댓글을 달다!");
 
         //when
-        BorrowCommentResponse borrowCommentResponse = borrowCommentService.create(createBorrowCommentRequest.requestToServiceDto(savedMember.getId(), savedBorrow.getId()));
+        BorrowCommentResponse borrowCommentResponse = borrowCommentService.create(registerBorrowCommentRequest.toServiceRequest(savedMember.getId(), savedBorrow.getId()));
         BorrowComment borrowComment = borrowCommentRepository.findById(savedBorrow.getId()).orElseThrow();
 
         //then
@@ -70,8 +70,8 @@ class BorrowCommentServiceImplTest {
         Member savedMember = memberRepository.save(Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null));
         Borrow savedBorrow = borrowRepository.save(Borrow.createBorrow(getCreateBorrowDto(savedMember.getId())));
 
-        CreateBorrowCommentRequest createBorrowCommentRequest = getCreateBorrowCommentRequest("댓글을 달다!");
-        BorrowCommentResponse borrowCommentResponse = borrowCommentService.create(createBorrowCommentRequest.requestToServiceDto(savedMember.getId(), savedBorrow.getId()));
+        RegisterBorrowCommentRequest registerBorrowCommentRequest = getCreateBorrowCommentRequest("댓글을 달다!");
+        BorrowCommentResponse borrowCommentResponse = borrowCommentService.create(registerBorrowCommentRequest.toServiceRequest(savedMember.getId(), savedBorrow.getId()));
 
         UpdateBorrowCommentRequest updateBorrowCommentRequest = new UpdateBorrowCommentRequest("댓글 수정");
         UpdateBorrowCommentDto updateBorrowCommentDto = updateBorrowCommentRequest.requestToServiceDto(savedMember.getId(), savedBorrow.getId(), borrowCommentResponse.getId());
@@ -92,8 +92,8 @@ class BorrowCommentServiceImplTest {
         Member savedMember = memberRepository.save(Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null));
         Borrow savedBorrow = borrowRepository.save(Borrow.createBorrow(getCreateBorrowDto(savedMember.getId())));
 
-        CreateBorrowCommentRequest createBorrowCommentRequest = getCreateBorrowCommentRequest("댓글을 달다!");
-        BorrowCommentResponse borrowCommentResponse = borrowCommentService.create(createBorrowCommentRequest.requestToServiceDto(savedMember.getId(), savedBorrow.getId()));
+        RegisterBorrowCommentRequest registerBorrowCommentRequest = getCreateBorrowCommentRequest("댓글을 달다!");
+        BorrowCommentResponse borrowCommentResponse = borrowCommentService.create(registerBorrowCommentRequest.toServiceRequest(savedMember.getId(), savedBorrow.getId()));
 
 
         //when
@@ -111,8 +111,8 @@ class BorrowCommentServiceImplTest {
         Member savedMember = memberRepository.save(Member.createMember("ss@eamil.com", "킴", "쌩수", Member.MemberState.NEW, null));
         Borrow savedBorrow = borrowRepository.save(Borrow.createBorrow(getCreateBorrowDto(savedMember.getId())));
 
-        CreateBorrowCommentRequest createBorrowCommentRequest = getCreateBorrowCommentRequest("댓글을 달다!");
-        BorrowCommentResponse borrowCommentResponse = borrowCommentService.create(createBorrowCommentRequest.requestToServiceDto(savedMember.getId(), savedBorrow.getId()));
+        RegisterBorrowCommentRequest registerBorrowCommentRequest = getCreateBorrowCommentRequest("댓글을 달다!");
+        BorrowCommentResponse borrowCommentResponse = borrowCommentService.create(registerBorrowCommentRequest.toServiceRequest(savedMember.getId(), savedBorrow.getId()));
 
         borrowCommentService.delete(savedBorrow.getId(), borrowCommentResponse.getId(), savedMember.getId());
 
@@ -128,8 +128,8 @@ class BorrowCommentServiceImplTest {
     }
 
 
-    static CreateBorrowCommentRequest getCreateBorrowCommentRequest(String comment) {
-        return new CreateBorrowCommentRequest(comment);
+    static RegisterBorrowCommentRequest getCreateBorrowCommentRequest(String comment) {
+        return new RegisterBorrowCommentRequest(comment);
     }
 
     private CreateBorrowDto getCreateBorrowDto(Long memberId) {

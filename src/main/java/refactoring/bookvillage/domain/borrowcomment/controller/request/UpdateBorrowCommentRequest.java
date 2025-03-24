@@ -1,4 +1,4 @@
-package refactoring.bookvillage.domain.borrow.controller.commentdto;
+package refactoring.bookvillage.domain.borrowcomment.controller.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

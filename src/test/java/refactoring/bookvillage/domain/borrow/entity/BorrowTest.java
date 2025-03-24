@@ -4,13 +4,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import refactoring.bookvillage.domain.borrow.controller.borrowdto.BorrowResponse;
+import refactoring.bookvillage.domain.borrow.controller.response.BorrowResponse;
 import refactoring.bookvillage.domain.borrow.repository.BorrowRepository;
 import refactoring.bookvillage.domain.borrow.service.dto.borrowdto.CreateBorrowDto;
 import refactoring.bookvillage.domain.member.entity.Member;
 import refactoring.bookvillage.domain.member.repository.MemberRepository;
-
-import static org.assertj.core.api.Assertions.*;
 
 @DataJpaTest
 class BorrowTest {

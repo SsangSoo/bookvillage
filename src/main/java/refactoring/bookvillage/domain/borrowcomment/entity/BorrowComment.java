@@ -1,4 +1,4 @@
-package refactoring.bookvillage.domain.borrow.entity;
+package refactoring.bookvillage.domain.borrowcomment.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import refactoring.bookvillage.domain.audit.BaseEntity;
-import refactoring.bookvillage.domain.borrow.controller.commentdto.BorrowCommentResponse;
+import refactoring.bookvillage.domain.borrowcomment.controller.response.BorrowCommentResponse;
 import refactoring.bookvillage.domain.borrow.service.dto.commentdto.CreateBorrowCommentDto;
 import refactoring.bookvillage.global.exception.BusinessException;
 

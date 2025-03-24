@@ -7,7 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import refactoring.bookvillage.domain.borrow.controller.borrowdto.*;
+import refactoring.bookvillage.domain.borrow.controller.request.BorrowCondition;
+import refactoring.bookvillage.domain.borrow.controller.request.CreateBorrowRequest;
+import refactoring.bookvillage.domain.borrow.controller.request.UpdateBorrowRequest;
+import refactoring.bookvillage.domain.borrow.controller.response.*;
 import refactoring.bookvillage.domain.borrow.service.command.BorrowCommandService;
 import refactoring.bookvillage.global.util.response.MessageResponse;
 

@@ -2,14 +2,18 @@ package refactoring.bookvillage.domain.borrow.service.command;
 
 import refactoring.bookvillage.domain.borrow.service.dto.commentdto.CreateBorrowCommentDto;
 import refactoring.bookvillage.domain.borrow.service.dto.commentdto.UpdateBorrowCommentDto;
-import refactoring.bookvillage.domain.borrow.controller.commentdto.BorrowCommentResponse;
+import refactoring.bookvillage.domain.borrowcomment.controller.response.BorrowCommentResponse;
+
+import java.util.List;
 
 public interface BorrowCommentCommandService {
 
-    BorrowCommentResponse create(CreateBorrowCommentDto createBorrowCommentDto);
+    BorrowCommentResponse registerBorrowComment(CreateBorrowCommentDto createBorrowCommentDto);
 
-    BorrowCommentResponse update(UpdateBorrowCommentDto updateBorrowCommentDto);
+    BorrowCommentResponse modifyBorrowComment(UpdateBorrowCommentDto updateBorrowCommentDto);
 
-    void delete(Long borrowId, Long borrowCommentId, Long memberId);
+    void removeBorrowComment(Long borrowId, Long borrowCommentId, Long memberId);
+
+    List<BorrowCommentResponse> retrieveBorrowComments(Long borrowId, Long memberId);
 
 }

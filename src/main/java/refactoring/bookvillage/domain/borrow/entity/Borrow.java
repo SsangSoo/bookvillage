@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import refactoring.bookvillage.domain.borrow.controller.borrowdto.BorrowResponse;
+import refactoring.bookvillage.domain.borrow.controller.response.BorrowResponse;
 import refactoring.bookvillage.domain.borrow.service.dto.borrowdto.CreateBorrowDto;
 import refactoring.bookvillage.domain.audit.BaseEntity;
 import refactoring.bookvillage.domain.borrow.service.dto.borrowdto.UpdateBorrowDto;
@@ -37,7 +37,7 @@ public class Borrow extends BaseEntity {
     private String publisher;
 
     @Column(name = "view_count")
-    private Long viewCount;
+    private long viewCount;
 
     @Column(name = "thumbnail")
     private String thumbnail;

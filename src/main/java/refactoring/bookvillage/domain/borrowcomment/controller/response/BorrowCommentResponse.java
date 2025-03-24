@@ -1,4 +1,4 @@
-package refactoring.bookvillage.domain.borrow.controller.commentdto;
+package refactoring.bookvillage.domain.borrowcomment.controller.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

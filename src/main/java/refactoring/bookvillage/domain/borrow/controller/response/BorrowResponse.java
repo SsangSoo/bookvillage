@@ -1,9 +1,9 @@
-package refactoring.bookvillage.domain.borrow.controller.borrowdto;
+package refactoring.bookvillage.domain.borrow.controller.response;
 
 
 import lombok.Builder;
 import lombok.Getter;
-import refactoring.bookvillage.domain.borrow.controller.commentdto.BorrowCommentResponse;
+import refactoring.bookvillage.domain.borrowcomment.controller.response.BorrowCommentResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
